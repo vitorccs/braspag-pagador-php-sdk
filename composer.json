@@ -1,0 +1,39 @@
+{
+    "name": "vitorccs/braspag-pagador-php-sdk",
+    "version": "1.0.0",
+    "description": "SDK em PHP para API Braspag Pagador",
+    "homepage": "https://github.com/vitorccs/braspag-pagador-php-sdk",
+    "license": "GPL-3.0",
+    "keywords": [
+        "braspag",
+        "pagador"
+    ],
+    "authors": [
+        {
+            "name": "Vitor Siqueira",
+            "email": "vitorccsiqueira@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Braspag\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Braspag\\Test\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "fakerphp/faker": "^1.16"
+    },
+    "scripts": {
+        "test": "phpunit --testdox"
+    }
+}

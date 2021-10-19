@@ -1,0 +1,281 @@
+# Braspag Pagador - SDK PHP
+SDK em PHP para API Braspag Pagador
+
+## Requisitos
+* PHP >= 7.4
+
+## Descrição
+SDK em PHP para a [API Braspag Pagador](https://braspag.github.io/manual/braspag-pagador).
+
+## Instalação
+Via Composer
+```bash
+composer require vitorccs/braspag-pagador-php-sdk
+```
+
+## Parâmetros
+
+Parâmetro | Obrigatório | Padrão | Comentário
+------------ | ------------- | ------------- | -------------
+BRASPAG_MERCHANT_ID | Sim | null | Merchant ID para autenticação
+BRASPAG_MERCHANT_KEY | Sim | null | Merchant Key para autenticação
+BRASPAG_SANDBOX | Não | false | Habilita o modo Sandbox
+BRASPAG_TIMEOUT | Não | 30 | Timeout em segundos para estabelecer conexão com a API
+
+Podem ser definidos por variáveis de ambiente:
+
+```bash
+# ex: em um arquivo .env
+BRASPAG_MERCHANT_ID=myMerchantId
+BRASPAG_MERCHANT_KEY=myMerchantKey
+BRASPAG_SANDBOX=true
+```
+
+ou passados como argumento do serviço:
+
+```php
+$parameters = new \Braspag\Entities\Parameters(
+    'myMerchantId',
+    'myMerchantKey', 
+    true
+);
+
+$transaction = new \Braspag\SaleService($parameters);
+```
+
+## Serviços implementados
+
+### Transação
+
+```php
+$saleService = new \Braspag\SaleService();
+```
+Criar Transação (para qualquer Meio de Pagamento)
+```php
+$response = $saleService->create($sale);
+```
+Estornar Transação (para qualquer Meio de Pagamento)
+```php
+$response = $saleService->refund($paymentId, $amount);
+```
+
+### Consultas
+
+```php
+$queryService = new \Braspag\QueryService();
+```
+Obter Transação por Payment ID (ID de Pagamento)
+```php
+$response = $queryService->getByPaymentId($paymentId);
+```
+Obter Transação por Merchant Order Id (Identificador da Loja)
+```php
+$response = $queryService->getByMerchantOrderId($merchantOrderId);
+```
+Obter Transação por Recurrent Payment ID (ID de Pagamento Recorrente)
+```php
+$response = $queryService->getByRecurrentPaymentId($recurrentPaymentId);
+```
+
+## Construtores
+Para auxiliar a criar uma Transação, foram disponibilizados alguns construtores (builders):
+
+### Cliente
+```php
+use Braspag\Builders\CustomerBuilder;
+
+// Somente Nome é obrigatório para todos os Meios de Pagamento
+$customer = CustomerBuilder::create('Nome Cliente')
+    ->setIdentity('01.027.058/0001-91')
+    ->setEmail('email@email.com')
+    ->setBirthdate('2000-01-01')
+    ->setIpAddress('64.111.123.211')
+    ->get();
+```
+### Endereço
+```php
+use Braspag\Builders\AddressBuilder;
+
+$address = AddressBuilder::create()
+    ->setZipCode('06455-030')
+    ->setStreet('Alameda Xingu')
+    ->setNumber(512)
+    ->setComplement('21o andar')
+    ->setDistrict('Barueri')
+    ->setState('SP')
+    ->setCity('São Paulo')
+    ->get();
+```
+### Pagamento PIX
+
+```php
+use Braspag\Builders\Sales\PixSaleBuilder;
+
+$pixSale = PixSaleBuilder::create(Providers::CIELO, 20)
+    ->withCustomer($customer)
+    ->withMerchantOrderId('000000006')
+    ->get();
+
+```
+### Pagamento Cartão de Crédito
+
+```php
+// primeiros, criamos o cartão
+use Braspag\Builders\Cards\CreditCardBuilder;
+use Braspag\Builders\Sales\CreditCardSaleBuilder;
+
+$creditCard = CreditCardBuilder::create()
+    ->setCardNumber('4324017527053834')
+    ->setBrand('Visa')
+    ->setHolder($customer->Name)
+    ->setExpirationDate('09/2030')
+    ->setSecurityCode(333)
+    ->setSaveCard(true)
+    ->get();
+
+// depois criamos a venda (apenas como exemplo, incluímos endereço)
+$creditCardSale = CreditCardSaleBuilder::create(Providers::SIMULADO, 20)
+    ->withCustomer($customer)
+    ->withMerchantOrderId('000000007')
+    ->withCreditCard($creditCard)
+    ->withCustomerAddress($address)
+    ->withCustomerDeliveryAddress($address)
+    ->get();
+```
+
+### Pagamento Cartão de Débito
+
+```php
+use Braspag\Builders\Cards\DebitCardBuilder;
+use Braspag\Builders\Sales\DebitCardSaleBuilder;
+
+$debitCard = DebitCardBuilder::create()
+    ->setCardNumber('4324017527053834')
+    ->setBrand('Visa')
+    ->setHolder($customer->Name)
+    ->setExpirationDate('09/2030')
+    ->setSecurityCode(333)
+    ->setSaveCard(true)
+    ->get();
+
+$debitCardSale = DebitCardSaleBuilder::create(Providers::SIMULADO, 20)
+    ->withCustomer($customer)
+    ->withMerchantOrderId($merchantOrderId)
+    ->withDebitCard($debitCard)
+    ->setReturnUrl('https://www.myreturnurl.com/path')
+    ->get();
+```
+
+## Tratamento de erros
+Esta biblioteca lança as seguintes exceções:
+
+* `BraspagProviderException` para requisições que embora tenham retornado como sucesso (HTTP 2xx), o corpo da resposta indica um erro retornado pelo Provider [Status = 0](https://braspag.github.io/manual/braspag-pagador#lista-de-status-da-transa%C3%A7%C3%A3o). Tratamento implementado apenas no endpoint de criar Transação.
+* `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e que possuem mensagem de erro retornado pela API Braspag
+* `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e sem tratamento de erro (ex: erros de conexão, Timeout, etc)
+
+Exemplo de corpo da resposta onde será lançado uma exceção `BraspagProviderException`
+```
+{
+  ...
+  "Payment": {
+    ...
+    "Status": 0,
+    "ProviderReturnMessage": "ERRO AO REALIZAR OPERACAO",
+    ...
+  }
+}
+```
+
+Exemplo de corpo da resposta onde será lançado uma exceção `BraspagValidationException`
+```
+[
+    {
+        "Code": 133,
+        "Message": "Provider is not supported for this Payment Type"
+    }
+]
+```
+
+## Exemplo de implementação
+
+```php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require __DIR__.'/vendor/autoload.php';
+
+putenv('BRASPAG_MERCHANT_ID=myMerchantId');
+putenv('BRASPAG_MERCHANT_KEY=myMerchantKey');
+putenv('BRASPAG_SANDBOX=true');
+
+use Braspag\Builders\CustomerBuilder;
+use Braspag\Builders\Sales\PixSaleBuilder;
+use Braspag\Enum\Providers;
+use Braspag\Exceptions\BraspagProviderException;
+use Braspag\Exceptions\BraspagValidationException;
+use Braspag\Exceptions\BraspagRequestException;
+
+try {
+    // CRIANDO UMA TRANSAÇÃO
+    $saleService = new \Braspag\SaleService();
+    
+    // Opção 1 - Usando Builders
+    $customer = CustomerBuilder::create('Nome Cliente')
+        ->setIdentity('01.027.058/0001-91')
+        ->get();
+        
+    $pixSale = PixSaleBuilder::create(Providers::CIELO, 20)
+        ->withCustomer($customer)
+        ->withMerchantOrderId('000000006')
+        ->get();
+    
+    // Opção 2 - Usando array puro
+    /*
+    $pixSale = [
+        'MerchantOrderId' => '000000006',
+        'Customer' => [
+            'Name' => 'Nome Cliente',
+            'Identity' => '01027058000191',
+            'IdentityType' => 'CNPJ'
+        ],
+        'Payment' => [
+            'Type' => 'Pix',
+            'Provider' => 'Simulado',
+            'Amount' => 20
+        ]
+    ];
+    */
+    
+    $checkSuccess = true;  // Habilitar BraspagProviderException
+    $response = $saleService->create($pixSale, $checkSuccess);
+
+    print_r($response);
+
+} catch (BraspagProviderException $e) { // erros de Provider
+    echo sprintf('Provider: %s (Payment Status: %s)', $e->getMessage(), $e->getCode());
+    // NOTA: em erros de Provider, a Braspag irá criar a Transação normalmente
+    // Caso queira capturar o corpo da reposta, utilize o método abaixo:
+    $response = $e->getResponseData();
+    
+} catch (BraspagValidationException $e) { // erros de Validação da API
+    echo sprintf('Validation: %s (Code: %s)', $e->getMessage(), $e->getCode());
+
+} catch (BraspagRequestException $e) { // demais erros não tratados (HTTP 4xx e 5xx)
+    echo sprintf('Request: %s (HTTP Status: %s)', $e->getMessage(), $e->getCode());
+
+} catch (\Exception $e) { // demais erros
+    echo $e->getMessage();
+}
+```
+
+## Testes
+
+Caso queira contribuir, por favor, implementar testes de unidade em PHPUnit.
+
+Para executar:
+
+```bash
+composer test
+```
+
+ 
