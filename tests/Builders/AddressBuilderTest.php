@@ -15,13 +15,9 @@ class AddressBuilderTest extends TestCase
     /**
      * @dataProvider validAddressData
      */
-    public function test_properties(array $properties)
+    public function test_create_address(array $properties)
     {
-        $instanceAddress = new Address();
-
-        $this->fillObject($instanceAddress, $properties);
-
-        $builderAddress = AddressBuilder::create()
+        $address = AddressBuilder::create()
             ->setZipCode($properties['ZipCode'])
             ->setStreet($properties['Street'])
             ->setNumber($properties['Number'])
@@ -31,15 +27,12 @@ class AddressBuilderTest extends TestCase
             ->setDistrict($properties['District'])
             ->get();
 
-        foreach (array_keys($properties) as $property) {
-            $instance = $instanceAddress->{$property};
-            $builder = $builderAddress->{$property};
+        $objAddress = $this->fillObject(
+            new Address(),
+            $properties
+        );
+        $objAddress->ZipCode = ZipCodeHelper::unmask($objAddress->ZipCode);
 
-            if ($property === 'ZipCode') {
-                $instance = ZipCodeHelper::unmask($instance);
-            }
-
-            $this->assertEquals($builder, $instance);
-        }
+        $this->assertEquals($address, $objAddress);
     }
 }

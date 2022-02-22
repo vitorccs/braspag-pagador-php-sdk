@@ -14,13 +14,12 @@ composer require vitorccs/braspag-pagador-php-sdk
 ```
 
 ## Parâmetros
-
-Parâmetro | Obrigatório | Padrão | Comentário
------------- | ------------- | ------------- | -------------
-BRASPAG_MERCHANT_ID | Sim | null | Merchant ID para autenticação
-BRASPAG_MERCHANT_KEY | Sim | null | Merchant Key para autenticação
-BRASPAG_SANDBOX | Não | false | Habilita o modo Sandbox
-BRASPAG_TIMEOUT | Não | 30 | Timeout em segundos para estabelecer conexão com a API
+| Parâmetro            | Obrigatório | Padrão | Comentário                                             |
+|----------------------|-------------|--------|--------------------------------------------------------|
+| BRASPAG_MERCHANT_ID  | Sim         | null   | Merchant ID para autenticação                          |
+| BRASPAG_MERCHANT_KEY | Sim         | null   | Merchant Key para autenticação                         |
+| BRASPAG_SANDBOX      | Não         | false  | Habilita o modo Sandbox                                |
+| BRASPAG_TIMEOUT      | Não         | 30     | Timeout em segundos para estabelecer conexão com a API |
 
 Podem ser definidos por variáveis de ambiente:
 
@@ -56,6 +55,7 @@ $response = $saleService->create($sale);
 ```
 Estornar Transação (para qualquer Meio de Pagamento)
 ```php
+// importante: amount deve ser em centavos e tipo inteiro
 $response = $saleService->refund($paymentId, $amount);
 ```
 
@@ -106,24 +106,40 @@ $address = AddressBuilder::create()
     ->setCity('São Paulo')
     ->get();
 ```
+
 ### Pagamento PIX
 
 ```php
 use Braspag\Builders\Sales\PixSaleBuilder;
 
-$pixSale = PixSaleBuilder::create(Providers::CIELO, 20)
+$amount = 1000; // 10.00
+$pixSale = PixSaleBuilder::create(Providers::CIELO, $amount)
     ->withCustomer($customer)
     ->withMerchantOrderId('000000006')
     ->get();
-
 ```
+
+### Pagamento Boleto Bancário
+
+```php
+use Braspag\Builders\Sales\BoletoSaleBuilder;
+
+$amount = 1000; // 10.00
+$boletoSale = BoletoSaleBuilder::create(Providers::CIELO, $amount)
+    ->withCustomer($customer)
+    ->withMerchantOrderId('000000006')
+    ->setAssignor('Nome do Cedente')
+    ->setExpirationDate('2022-11-20')
+    ->get();
+```
+
 ### Pagamento Cartão de Crédito
 
 ```php
-// primeiros, criamos o cartão
 use Braspag\Builders\Cards\CreditCardBuilder;
 use Braspag\Builders\Sales\CreditCardSaleBuilder;
 
+// primeiro, criamos o cartão
 $creditCard = CreditCardBuilder::create()
     ->setCardNumber('4324017527053834')
     ->setBrand('Visa')
@@ -133,8 +149,9 @@ $creditCard = CreditCardBuilder::create()
     ->setSaveCard(true)
     ->get();
 
-// depois criamos a venda (apenas como exemplo, incluímos endereço)
-$creditCardSale = CreditCardSaleBuilder::create(Providers::SIMULADO, 20)
+// depois criamos a venda
+$amount = 1000; // 10.00
+$creditCardSale = CreditCardSaleBuilder::create(Providers::SIMULADO, $amount)
     ->withCustomer($customer)
     ->withMerchantOrderId('000000007')
     ->withCreditCard($creditCard)
@@ -158,7 +175,8 @@ $debitCard = DebitCardBuilder::create()
     ->setSaveCard(true)
     ->get();
 
-$debitCardSale = DebitCardSaleBuilder::create(Providers::SIMULADO, 20)
+$amount = 1000; // 10.00
+$debitCardSale = DebitCardSaleBuilder::create(Providers::SIMULADO, $amount)
     ->withCustomer($customer)
     ->withMerchantOrderId($merchantOrderId)
     ->withDebitCard($debitCard)
@@ -170,8 +188,8 @@ $debitCardSale = DebitCardSaleBuilder::create(Providers::SIMULADO, 20)
 Esta biblioteca lança as seguintes exceções:
 
 * `BraspagProviderException` para requisições que embora tenham retornado como sucesso (HTTP 2xx), o corpo da resposta indica um erro retornado pelo Provider [Status = 0](https://braspag.github.io/manual/braspag-pagador#lista-de-status-da-transa%C3%A7%C3%A3o). Tratamento implementado apenas no endpoint de criar Transação.
-* `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e que possuem mensagem de erro retornado pela API Braspag
-* `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e sem tratamento de erro (ex: erros de conexão, Timeout, etc)
+* `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e possuem mensagem de erro retornado pela API Braspag
+* `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e sem tratamento de erro (ex: erros de conexão, Timeout, etc.)
 
 Exemplo de corpo da resposta onde será lançado uma exceção `BraspagProviderException`
 ```

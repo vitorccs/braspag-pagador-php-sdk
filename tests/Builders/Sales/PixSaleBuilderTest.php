@@ -2,9 +2,9 @@
 
 namespace Braspag\Test\Builders\Sales;
 
-use Braspag\Entities\Customer;
+use Braspag\Builders\CustomerBuilder;
+use Braspag\Builders\Sales\PixSaleBuilder;
 use Braspag\Entities\Payment\PixPayment;
-use Braspag\Entities\Sale;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 
@@ -15,22 +15,25 @@ class PixSaleBuilderTest extends TestCase
     /**
      * @dataProvider validPixSale
      */
-    public function test_pix_sale(array $properties)
+    public function test_create_pix(array $properties)
     {
-        $customerProperties = $properties['Customer'];
-        $customer = new Customer($customerProperties['Name']);
-        $this->fillObject($customer, $customerProperties);
-
-        $paymentProperties = $properties['Payment'];
-        $pixPayment = new PixPayment($paymentProperties['Provider'], $paymentProperties['Amount']);
-        $this->fillObject($pixPayment, $paymentProperties);
-
         $merchantOrderId = $properties['MerchantOrderId'];
+        $customerProps = $properties['Customer'];
+        $paymentProps = $properties['Payment'];
 
-        $sale = new Sale($customer, $pixPayment, $merchantOrderId);
+        $customer = CustomerBuilder::create($customerProps['Name'])->get();
 
-        $this->assertEquals($sale->Customer, $customer);
-        $this->assertEquals($sale->Payment, $pixPayment);
+        $sale = PixSaleBuilder::create($paymentProps['Provider'], $paymentProps['Amount'])
+            ->withMerchantOrderId($merchantOrderId)
+            ->withCustomer($customer)
+            ->get();
+
+        $objPayment = $this->fillObject(
+            new PixPayment($paymentProps['Provider'], $paymentProps['Amount']),
+            $paymentProps
+        );
+
+        $this->assertEquals($sale->Payment, $objPayment);
         $this->assertEquals($sale->MerchantOrderId, $merchantOrderId);
     }
 }

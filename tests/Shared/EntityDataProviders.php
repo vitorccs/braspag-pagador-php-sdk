@@ -9,14 +9,22 @@ use Braspag\Enum\Providers;
 
 trait EntityDataProviders
 {
-    public function fillObject(object $obj, array $properties)
+    /**
+     * @param object $obj
+     * @param array $properties
+     * @return object
+     */
+    public function fillObject(object $obj, array $properties): object
     {
         foreach ($properties as $property => $value) {
             if (property_exists($obj, $property) && !is_array($value)) {
                 $obj->{$property} = $value;
             }
         }
+        return $obj;
     }
+
+    // basic entities
 
     public function validAddressData(): array
     {
@@ -24,7 +32,7 @@ trait EntityDataProviders
             'valid' => [
                 [
                     'Street' => FakerHelper::get()->streetName(),
-                    'Number' => FakerHelper::get()->numberBetween(1, 10000),
+                    'Number' => FakerHelper::get()->randomNumber(5),
                     'Complement' => FakerHelper::get()->secondaryAddress(),
                     'ZipCode' => FakerHelper::get()->postcode(),
                     'City' => FakerHelper::get()->city(),
@@ -50,6 +58,8 @@ trait EntityDataProviders
             ]
         ];
     }
+
+    // card data
 
     public function validCreditCard(): array
     {
@@ -89,34 +99,32 @@ trait EntityDataProviders
         ];
     }
 
-    public function validPixPayment(): array
-    {
-        return [
-            'valid' => [
-                [
-                    'Type' => PaymentTypes::PIX,
-                    'Provider' => Providers::SIMULADO,
-                    'Amount' => FakerHelper::get()->numberBetween(10, 100)
-                ]
-            ]
-        ];
-    }
+    // payment
 
-    public function validPixSale(): array
+    public function validBoletoPayment(): array
     {
         return [
             'valid' => [
                 [
-                    'MerchantOrderId' => FakerHelper::get()->numberBetween(10000, 99999),
-                    'Customer' => [
-                        'Name' => FakerHelper::get()->name,
-                        'Identity' => FakerHelper::get()->cpf(),
-                        'IdentityType' => 'CPF',
-                        'Email' => FakerHelper::get()->email(),
-                        'Birthdate' => FakerHelper::get()->date(),
-                        'IpAddress' => FakerHelper::get()->ipv4()
-                    ],
-                    'Payment' => $this->validPixPayment()['valid'][0]
+                    'Type' => PaymentTypes::BOLETO,
+                    'Provider' => Providers::SIMULADO,
+                    'Amount' => FakerHelper::get()->randomNumber(),
+                    'BoletoNumber' => (string) FakerHelper::get()->randomNumber(8),
+                    'Assignor' => FakerHelper::get()->text(200),
+                    'Demonstrative' => FakerHelper::get()->text(255),
+                    'ExpirationDate' => FakerHelper::get()->dateTime(),
+                    'Identification' => FakerHelper::get()->cnpj(false),
+                    'Instructions' => FakerHelper::get()->text(450),
+                    'NullifyDays' => FakerHelper::get()->randomNumber(2),
+                    'DaysToFine' => FakerHelper::get()->randomNumber(2),
+                    'FineRate' => FakerHelper::get()->randomFloat(5, 1, 99),
+                    'FineAmount' => FakerHelper::get()->randomNumber(3),
+                    'DaysToInterest' => FakerHelper::get()->randomNumber(2),
+                    'InterestRate' => FakerHelper::get()->randomFloat(5, 1, 99),
+                    'InterestAmount' => FakerHelper::get()->randomNumber(3),
+                    'DiscountAmount' => FakerHelper::get()->randomNumber(3),
+                    'DiscountLimitDate' => FakerHelper::get()->date(),
+                    'DiscountRate' => FakerHelper::get()->randomFloat(5, 1, 99),
                 ]
             ]
         ];
@@ -161,14 +169,55 @@ trait EntityDataProviders
         ];
     }
 
+    public function validPixPayment(): array
+    {
+        return [
+            'valid' => [
+                [
+                    'Type' => PaymentTypes::PIX,
+                    'Provider' => Providers::SIMULADO,
+                    'Amount' => FakerHelper::get()->randomNumber()
+                ]
+            ]
+        ];
+    }
+
+    // sales
+
+    public function validBoletoSale(): array
+    {
+        return [
+            'valid' => [
+                [
+                    'MerchantOrderId' => FakerHelper::get()->randomNumber(6),
+                    'Customer' => $this->validCustomerData()['valid'][0],
+                    'Payment' => $this->validBoletoPayment()['valid'][0]
+                ]
+            ]
+        ];
+    }
+
     public function validCreditCardSale(): array
     {
         return [
             'valid' => [
                 [
-                    'MerchantOrderId' => FakerHelper::get()->numberBetween(10000, 99999),
+                    'MerchantOrderId' => FakerHelper::get()->randomNumber(6),
                     'Customer' => $this->validCustomerData()['valid'][0],
                     'Payment' => $this->validCreditCardPayment()['valid'][0]
+                ]
+            ]
+        ];
+    }
+
+    public function validPixSale(): array
+    {
+        return [
+            'valid' => [
+                [
+                    'MerchantOrderId' => FakerHelper::get()->randomNumber(6),
+                    'Customer' => $this->validCustomerData()['valid'][0],
+                    'Payment' => $this->validPixPayment()['valid'][0]
                 ]
             ]
         ];

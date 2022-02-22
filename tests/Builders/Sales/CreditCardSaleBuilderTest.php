@@ -2,10 +2,9 @@
 
 namespace Braspag\Test\Builders\Sales;
 
-use Braspag\Entities\Cards\CreditCard;
-use Braspag\Entities\Customer;
+use Braspag\Builders\CustomerBuilder;
+use Braspag\Builders\Sales\CreditCardSaleBuilder;
 use Braspag\Entities\Payment\CreditCardPayment;
-use Braspag\Entities\Sale;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 
@@ -16,26 +15,34 @@ class CreditCardSaleBuilderTest extends TestCase
     /**
      * @dataProvider validCreditCardSale
      */
-    public function test_pix_sale(array $properties)
+    public function test_create_credit_card(array $properties)
     {
-        $customerProperties = $properties['Customer'];
-        $customer = new Customer($customerProperties['Name']);
-        $this->fillObject($customer, $customerProperties);
-
-        $paymentProperties = $properties['Payment'];
-        $creditCardPayment = new CreditCardPayment($paymentProperties['Provider'], $paymentProperties['Amount']);
-        $this->fillObject($creditCardPayment, $paymentProperties);
-
-        $creditCard = new CreditCard();
-        $this->fillObject($creditCard, $properties['Payment']['CreditCard']);
-        $creditCardPayment->CreditCard = $creditCard;
-
         $merchantOrderId = $properties['MerchantOrderId'];
+        $customerProps = $properties['Customer'];
+        $paymentProps = $properties['Payment'];
 
-        $sale = new Sale($customer, $creditCardPayment, $merchantOrderId);
+        $customer = CustomerBuilder::create($customerProps['Name'])->get();
 
-        $this->assertEquals($sale->Customer, $customer);
-        $this->assertEquals($sale->Payment, $creditCardPayment);
+        $sale = CreditCardSaleBuilder::create($paymentProps['Provider'], $paymentProps['Amount'])
+            ->withMerchantOrderId($merchantOrderId)
+            ->withCustomer($customer)
+            ->setInstallments($paymentProps['Installments'])
+            ->setCurrency($paymentProps['Currency'])
+            ->setCountry($paymentProps['Country'])
+            ->setInterest($paymentProps['Interest'])
+            ->setCapture($paymentProps['Capture'])
+            ->setAuthenticate($paymentProps['Authenticate'])
+            ->setRecurrent($paymentProps['Recurrent'])
+            ->setSoftDescriptor($paymentProps['SoftDescriptor'])
+            ->setDoSplit($paymentProps['DoSplit'])
+            ->get();
+
+        $objPayment = $this->fillObject(
+            new CreditCardPayment($paymentProps['Provider'], $paymentProps['Amount']),
+            $paymentProps
+        );
+
+        $this->assertEquals($sale->Payment, $objPayment);
         $this->assertEquals($sale->MerchantOrderId, $merchantOrderId);
     }
 }
