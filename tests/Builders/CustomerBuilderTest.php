@@ -17,35 +17,28 @@ class CustomerBuilderTest extends TestCase
     /**
      * @dataProvider validCustomerData
      */
-    public function test_properties(array $properties)
+    public function test_create_customer(array $properties)
     {
-        $instanceCustomer = new Customer($properties['Name']);
-
-        $this->fillObject($instanceCustomer, $properties);
-
-        $builderCustomer = CustomerBuilder::create($properties['Name'])
+        $customer = CustomerBuilder::create($properties['Name'])
             ->setIdentity($properties['Identity'])
             ->setEmail($properties['Email'])
             ->setBirthdate($properties['Birthdate'])
             ->setIpAddress($properties['IpAddress'])
             ->get();
 
-        foreach (array_keys($properties) as $property) {
-            $instance = $instanceCustomer->{$property};
-            $builder = $builderCustomer->{$property};
+        $objCustomer = $this->fillObject(
+            new Customer($properties['Name']),
+            $properties
+        );
+        $objCustomer->Identity = CpfCnpjHelper::unmask($objCustomer->Identity);
 
-            if ($property === 'Identity') {
-                $instance = CpfCnpjHelper::unmask($instance);
-            }
-
-            $this->assertEquals($builder, $instance);
-        }
+        $this->assertEquals($customer, $objCustomer);
     }
 
     /**
      * @dataProvider invalidName
      */
-    public function test_invalid_name(string $name)
+    public function test_create_invalid_name(string $name)
     {
         $this->expectException(BraspagBuilderException::class);
 
@@ -55,7 +48,7 @@ class CustomerBuilderTest extends TestCase
     /**
      * @dataProvider invalidEmail
      */
-    public function test_invalid_email(string $mail)
+    public function test_create_invalid_email(string $mail)
     {
         $this->expectException(BraspagBuilderException::class);
 
@@ -68,7 +61,7 @@ class CustomerBuilderTest extends TestCase
     /**
      * @dataProvider invalidCpf
      */
-    public function test_invalid_cpf(string $cpf)
+    public function test_create_invalid_cpf(string $cpf)
     {
         $this->expectException(BraspagBuilderException::class);
 
@@ -81,7 +74,7 @@ class CustomerBuilderTest extends TestCase
     /**
      * @dataProvider invalidCnpj
      */
-    public function test_invalid_cnpj(string $cnpj)
+    public function test_create_invalid_cnpj(string $cnpj)
     {
         $this->expectException(BraspagBuilderException::class);
 

@@ -19,11 +19,7 @@ class DebitCardBuilderTest extends TestCase
      */
     public function test_debit_properties(array $properties)
     {
-        $instanceCard = new DebitCard();
-
-        $this->fillObject($instanceCard, $properties);
-
-        $builderCard = DebitCardBuilder::create()
+        $card = DebitCardBuilder::create()
             ->setCardNumber($properties['CardNumber'])
             ->setHolder($properties['Holder'])
             ->setExpirationDate($properties['ExpirationDate'])
@@ -33,27 +29,29 @@ class DebitCardBuilderTest extends TestCase
             ->setAlias($properties['Alias'])
             ->get();
 
-        foreach (array_keys($properties) as $property) {
-            $instance = $instanceCard->{$property};
-            $builder = $builderCard->{$property};
-            $this->assertEquals($builder, $instance);
-        }
+        $objCard = $this->fillObject(
+            new DebitCard(),
+            $properties
+        );
+
+        $this->assertEquals($card, $objCard);
     }
 
     /**
      * @dataProvider invalidCardBrand
-     * @dataProvider invalidCreditCardBrand
+     * @dataProvider invalidDebitCardBrand
      */
-    public function test_invalid_credit_card_brand(bool $valid, array $brands)
+    public function test_invalid_debit_card_brand(bool $valid, array $brands)
     {
         $this->expectException(BraspagBuilderException::class);
 
         foreach ($brands as $brand) {
-            DebitCardBuilder::create()->setBrand($brand);
+            DebitCardBuilder::create()
+                ->setBrand($brand);
         }
     }
 
-    public function invalidCreditCardBrand(): array
+    public function invalidDebitCardBrand(): array
     {
         $samples = array_map('strtolower', DebitCardBrands::getArray());
 

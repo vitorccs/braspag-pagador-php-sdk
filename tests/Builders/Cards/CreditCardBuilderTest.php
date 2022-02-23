@@ -17,13 +17,9 @@ class CreditCardBuilderTest extends TestCase
     /**
      * @dataProvider validCreditCard
      */
-    public function test_credit_properties(array $properties)
+    public function teste_create_card(array $properties)
     {
-        $instanceCard = new CreditCard();
-
-        $this->fillObject($instanceCard, $properties);
-
-        $builderCard = CreditCardBuilder::create()
+        $card = CreditCardBuilder::create()
             ->setCardNumber($properties['CardNumber'])
             ->setHolder($properties['Holder'])
             ->setExpirationDate($properties['ExpirationDate'])
@@ -33,11 +29,12 @@ class CreditCardBuilderTest extends TestCase
             ->setAlias($properties['Alias'])
             ->get();
 
-        foreach (array_keys($properties) as $property) {
-            $instance = $instanceCard->{$property};
-            $builder = $builderCard->{$property};
-            $this->assertEquals($builder, $instance);
-        }
+        $objCard = $this->fillObject(
+            new CreditCard(),
+            $properties
+        );
+
+        $this->assertEquals($card, $objCard);
     }
 
     /**

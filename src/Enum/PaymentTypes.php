@@ -10,5 +10,5 @@ class PaymentTypes
     const CREDIT_CARD = 'CreditCard';
     const DEBIT_CARD = 'DebitCard';
     const ELECTRONIC_TRANSFER = 'ElectronicTransfer';
-    const BANK_SLIP = 'Boleto';
+    const BOLETO = 'Boleto';
 }
