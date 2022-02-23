@@ -1,6 +1,5 @@
 {
     "name": "vitorccs/braspag-pagador-php-sdk",
-    "version": "1.0.0",
     "description": "SDK em PHP para API Braspag Pagador",
     "homepage": "https://github.com/vitorccs/braspag-pagador-php-sdk",
     "license": "GPL-3.0",
