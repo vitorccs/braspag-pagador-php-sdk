@@ -1,5 +1,6 @@
 .idea
-vendor
 .phpunit.result.cache
 composer.phar
 index.php
+phpunit.xml
+vendor
