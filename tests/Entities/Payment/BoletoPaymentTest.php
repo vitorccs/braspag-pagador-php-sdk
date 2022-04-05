@@ -12,7 +12,7 @@ class BoletoPaymentTest extends TestCase
     use EntityDataProviders;
 
     /**
-     * @dataProvider validPixPayment
+     * @dataProvider validBoletoPayment
      */
     public function test_properties(array $properties)
     {

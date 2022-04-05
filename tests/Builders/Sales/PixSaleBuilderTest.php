@@ -26,6 +26,7 @@ class PixSaleBuilderTest extends TestCase
         $sale = PixSaleBuilder::create($paymentProps['Provider'], $paymentProps['Amount'])
             ->withMerchantOrderId($merchantOrderId)
             ->withCustomer($customer)
+            ->setQrCodeExpiration($paymentProps['QrCodeExpiration'])
             ->get();
 
         $objPayment = $this->fillObject(

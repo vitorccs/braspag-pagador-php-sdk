@@ -24,4 +24,15 @@ class PixSaleBuilder extends SaleBuilder
     {
         $this->payment = new PixPayment($provider, $amount);
     }
+
+    /**
+     * @param int $expiration
+     * @return $this
+     */
+    public function setQrCodeExpiration(int $expiration): self
+    {
+        $this->payment->QrCodeExpiration = $expiration;
+
+        return $this;
+    }
 }

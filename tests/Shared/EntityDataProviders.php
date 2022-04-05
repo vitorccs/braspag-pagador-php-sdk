@@ -112,7 +112,7 @@ trait EntityDataProviders
                     'BoletoNumber' => (string) FakerHelper::get()->randomNumber(8),
                     'Assignor' => FakerHelper::get()->text(200),
                     'Demonstrative' => FakerHelper::get()->text(255),
-                    'ExpirationDate' => FakerHelper::get()->dateTime(),
+                    'ExpirationDate' => FakerHelper::get()->date(),
                     'Identification' => FakerHelper::get()->cnpj(false),
                     'Instructions' => FakerHelper::get()->text(450),
                     'NullifyDays' => FakerHelper::get()->randomNumber(2),
@@ -176,7 +176,8 @@ trait EntityDataProviders
                 [
                     'Type' => PaymentTypes::PIX,
                     'Provider' => Providers::SIMULADO,
-                    'Amount' => FakerHelper::get()->randomNumber()
+                    'Amount' => FakerHelper::get()->randomNumber(),
+                    'QrCodeExpiration' => FakerHelper::get()->numberBetween(1, 259200),
                 ]
             ]
         ];
