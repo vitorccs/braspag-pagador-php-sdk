@@ -30,7 +30,7 @@ class ClientFactory
     /**
      * @var string
      */
-    private static string $sdkVersion = '0.1.0';
+    private static string $sdkVersion = '1.3.0';
 
     /**
      * @param bool $apiQuery
