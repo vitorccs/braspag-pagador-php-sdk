@@ -102,7 +102,7 @@ class Api
 
             $response = $e->getResponse();
         } catch (GuzzleException $e) {
-            throw new BraspagException($e->getMessage());
+            throw new BraspagRequestException($e->getMessage());
         }
 
         return $this->response($response);
