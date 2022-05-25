@@ -2,7 +2,7 @@
 
 namespace Braspag;
 
-use Braspag\Entities\Sale;
+use Braspag\Entities\Pagador\Sale;
 use Braspag\Exceptions\BraspagProviderException;
 use Braspag\Http\Resource;
 

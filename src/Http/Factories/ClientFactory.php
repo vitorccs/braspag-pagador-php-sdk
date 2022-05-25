@@ -2,7 +2,7 @@
 
 namespace Braspag\Http\Factories;
 
-use Braspag\Entities\Parameters;
+use Braspag\Entities\Pagador\Parameters;
 use GuzzleHttp\Client;
 
 class ClientFactory
@@ -30,7 +30,7 @@ class ClientFactory
     /**
      * @var string
      */
-    private static string $sdkVersion = '1.3.0';
+    private static string $sdkVersion = '1.4.0';
 
     /**
      * @param bool $apiQuery

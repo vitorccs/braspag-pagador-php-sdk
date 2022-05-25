@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Braspag\Test\Entities;
 
-use Braspag\Entities\Address;
+use Braspag\Entities\Pagador\Address;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 

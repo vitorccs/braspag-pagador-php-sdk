@@ -2,7 +2,7 @@
 
 namespace Braspag\Http;
 
-use Braspag\Entities\Parameters;
+use Braspag\Entities\Pagador\Parameters;
 use Braspag\Exceptions\BraspagException;
 use Braspag\Exceptions\BraspagProviderException;
 use Braspag\Exceptions\BraspagRequestException;
@@ -70,6 +70,20 @@ class Api
     public function put(string $endpoint, $data = [])
     {
         return $this->request('PUT', $endpoint, ['json' => $data]);
+    }
+
+    /**
+     * @param string $endpoint
+     * @param array|object $data
+     * @return object|array|null
+     * @throws BraspagProviderException
+     * @throws BraspagValidationException
+     * @throws BraspagRequestException
+     * @throws BraspagException
+     */
+    public function delete(string $endpoint, $data = [])
+    {
+        return $this->request('DELETE', $endpoint, ['json' => $data]);
     }
 
     /**

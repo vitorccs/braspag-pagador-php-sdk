@@ -2,8 +2,8 @@
 
 namespace Braspag\Test\Builders;
 
-use Braspag\Builders\CustomerBuilder;
-use Braspag\Entities\Customer;
+use Braspag\Builders\Pagador\CustomerBuilder;
+use Braspag\Entities\Pagador\Customer;
 use Braspag\Exceptions\BraspagBuilderException;
 use Braspag\Helpers\CpfCnpjHelper;
 use Braspag\Test\Shared\EntityDataProviders;

@@ -2,8 +2,8 @@
 
 namespace Braspag\Test\Builders\Cards;
 
-use Braspag\Builders\Cards\CreditCardBuilder;
-use Braspag\Entities\Cards\CreditCard;
+use Braspag\Builders\Pagador\Cards\CreditCardBuilder;
+use Braspag\Entities\Pagador\Cards\CreditCard;
 use Braspag\Enum\CreditCardBrands;
 use Braspag\Exceptions\BraspagBuilderException;
 use Braspag\Test\Shared\CardDataProvider;

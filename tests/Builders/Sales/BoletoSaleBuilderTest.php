@@ -2,9 +2,9 @@
 
 namespace Braspag\Test\Builders\Sales;
 
-use Braspag\Builders\CustomerBuilder;
-use Braspag\Builders\Sales\BoletoSaleBuilder;
-use Braspag\Entities\Payment\BoletoPayment;
+use Braspag\Builders\Pagador\CustomerBuilder;
+use Braspag\Builders\Pagador\Sales\BoletoSaleBuilder;
+use Braspag\Entities\Pagador\Payment\BoletoPayment;
 use Braspag\Helpers\DateTimeHelper;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;

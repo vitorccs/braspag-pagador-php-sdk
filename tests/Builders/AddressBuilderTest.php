@@ -2,8 +2,8 @@
 
 namespace Braspag\Test\Builders;
 
-use Braspag\Builders\AddressBuilder;
-use Braspag\Entities\Address;
+use Braspag\Builders\Pagador\AddressBuilder;
+use Braspag\Entities\Pagador\Address;
 use Braspag\Helpers\ZipCodeHelper;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;

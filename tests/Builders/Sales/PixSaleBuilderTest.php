@@ -2,9 +2,9 @@
 
 namespace Braspag\Test\Builders\Sales;
 
-use Braspag\Builders\CustomerBuilder;
-use Braspag\Builders\Sales\PixSaleBuilder;
-use Braspag\Entities\Payment\PixPayment;
+use Braspag\Builders\Pagador\CustomerBuilder;
+use Braspag\Builders\Pagador\Sales\PixSaleBuilder;
+use Braspag\Entities\Pagador\Payment\PixPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 

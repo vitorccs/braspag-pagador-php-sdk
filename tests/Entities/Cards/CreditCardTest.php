@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Braspag\Test\Entities\Cards;
 
-use Braspag\Entities\Cards\CreditCard;
+use Braspag\Entities\Pagador\Cards\CreditCard;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 

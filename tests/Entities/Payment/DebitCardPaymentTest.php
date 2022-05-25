@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Braspag\Test\Entities\Payment;
 
-use Braspag\Entities\Cards\DebitCard;
-use Braspag\Entities\Payment\DebitCardPayment;
+use Braspag\Entities\Pagador\Cards\DebitCard;
+use Braspag\Entities\Pagador\Payment\DebitCardPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 

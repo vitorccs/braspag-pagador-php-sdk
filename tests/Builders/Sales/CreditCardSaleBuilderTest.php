@@ -2,9 +2,9 @@
 
 namespace Braspag\Test\Builders\Sales;
 
-use Braspag\Builders\CustomerBuilder;
-use Braspag\Builders\Sales\CreditCardSaleBuilder;
-use Braspag\Entities\Payment\CreditCardPayment;
+use Braspag\Builders\Pagador\CustomerBuilder;
+use Braspag\Builders\Pagador\Sales\CreditCardSaleBuilder;
+use Braspag\Entities\Pagador\Payment\CreditCardPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
 

@@ -2,7 +2,7 @@
 
 namespace Braspag\Http;
 
-use Braspag\Entities\Parameters;
+use Braspag\Entities\Pagador\Parameters;
 use GuzzleHttp\Handler\MockHandler;
 
 abstract class Resource

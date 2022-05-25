@@ -2,7 +2,7 @@
 
 namespace Braspag\Test\Shared;
 
-use Braspag\Entities\Parameters;
+use Braspag\Entities\Pagador\Parameters;
 
 class ParametersHelper
 {

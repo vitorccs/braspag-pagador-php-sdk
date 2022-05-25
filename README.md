@@ -33,7 +33,7 @@ BRASPAG_SANDBOX=true
 ou passados como argumento do serviço:
 
 ```php
-$parameters = new \Braspag\Entities\Parameters(
+$parameters = new \Braspag\Entities\Pagador\Parameters(
     'myMerchantId',
     'myMerchantKey', 
     true
@@ -81,8 +81,9 @@ $response = $queryService->getByRecurrentPaymentId($recurrentPaymentId);
 Para auxiliar a criar uma Transação, foram disponibilizados alguns construtores (builders):
 
 ### Cliente
+
 ```php
-use Braspag\Builders\CustomerBuilder;
+use Braspag\Builders\Pagador\CustomerBuilder;
 
 // Somente Nome é obrigatório para todos os Meios de Pagamento
 $customer = CustomerBuilder::create('Nome Cliente')
@@ -93,8 +94,9 @@ $customer = CustomerBuilder::create('Nome Cliente')
     ->get();
 ```
 ### Endereço
+
 ```php
-use Braspag\Builders\AddressBuilder;
+use Braspag\Builders\Pagador\AddressBuilder;
 
 $address = AddressBuilder::create()
     ->setZipCode('06455-030')
@@ -110,7 +112,7 @@ $address = AddressBuilder::create()
 ### Pagamento PIX
 
 ```php
-use Braspag\Builders\Sales\PixSaleBuilder;
+use Braspag\Builders\Pagador\Sales\PixSaleBuilder;
 
 $amount = 1000; // 10.00
 $pixSale = PixSaleBuilder::create(Providers::CIELO, $amount)
@@ -122,7 +124,7 @@ $pixSale = PixSaleBuilder::create(Providers::CIELO, $amount)
 ### Pagamento Boleto Bancário
 
 ```php
-use Braspag\Builders\Sales\BoletoSaleBuilder;
+use Braspag\Builders\Pagador\Sales\BoletoSaleBuilder;
 
 $amount = 1000; // 10.00
 $boletoSale = BoletoSaleBuilder::create(Providers::CIELO, $amount)
@@ -136,8 +138,7 @@ $boletoSale = BoletoSaleBuilder::create(Providers::CIELO, $amount)
 ### Pagamento Cartão de Crédito
 
 ```php
-use Braspag\Builders\Cards\CreditCardBuilder;
-use Braspag\Builders\Sales\CreditCardSaleBuilder;
+use Braspag\Builders\Pagador\Cards\CreditCardBuilder;use Braspag\Builders\Pagador\Sales\CreditCardSaleBuilder;
 
 // primeiro, criamos o cartão
 $creditCard = CreditCardBuilder::create()
@@ -163,8 +164,7 @@ $creditCardSale = CreditCardSaleBuilder::create(Providers::SIMULADO, $amount)
 ### Pagamento Cartão de Débito
 
 ```php
-use Braspag\Builders\Cards\DebitCardBuilder;
-use Braspag\Builders\Sales\DebitCardSaleBuilder;
+use Braspag\Builders\Pagador\Cards\DebitCardBuilder;use Braspag\Builders\Pagador\Sales\DebitCardSaleBuilder;
 
 $debitCard = DebitCardBuilder::create()
     ->setCardNumber('4324017527053834')
@@ -226,12 +226,7 @@ putenv('BRASPAG_MERCHANT_ID=myMerchantId');
 putenv('BRASPAG_MERCHANT_KEY=myMerchantKey');
 putenv('BRASPAG_SANDBOX=true');
 
-use Braspag\Builders\CustomerBuilder;
-use Braspag\Builders\Sales\PixSaleBuilder;
-use Braspag\Enum\Providers;
-use Braspag\Exceptions\BraspagProviderException;
-use Braspag\Exceptions\BraspagValidationException;
-use Braspag\Exceptions\BraspagRequestException;
+use Braspag\Builders\Pagador\CustomerBuilder;use Braspag\Builders\Pagador\Sales\PixSaleBuilder;use Braspag\Enum\Providers;use Braspag\Exceptions\BraspagProviderException;use Braspag\Exceptions\BraspagRequestException;use Braspag\Exceptions\BraspagValidationException;
 
 try {
     // CRIANDO UMA TRANSAÇÃO
