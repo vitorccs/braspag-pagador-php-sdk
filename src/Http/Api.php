@@ -7,8 +7,8 @@ use Braspag\Exceptions\BraspagException;
 use Braspag\Exceptions\BraspagProviderException;
 use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Exceptions\BraspagValidationException;
-use Braspag\Http\Factories\ClientFactory;
-use Braspag\Http\Factories\FakeClientFactory;
+use Braspag\Http\Factories\Fake\FakeClientFactory;
+use Braspag\Http\Factories\Pagador\ClientFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -25,9 +25,9 @@ class Api
     /**
      * @param Parameters|null $parameters
      */
-    public function __construct(bool $apiQuery, Parameters $parameters = null)
+    public function __construct(bool $isQuery, Parameters $parameters = null)
     {
-        $this->client = ClientFactory::create($apiQuery, $parameters);
+        $this->client = ClientFactory::create($isQuery, $parameters);
     }
 
     /**

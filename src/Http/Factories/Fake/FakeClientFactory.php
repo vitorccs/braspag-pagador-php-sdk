@@ -1,6 +1,6 @@
 <?php
 
-namespace Braspag\Http\Factories;
+namespace Braspag\Http\Factories\Fake;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;

@@ -1,12 +1,15 @@
 <?php
 
-namespace Braspag\Http\Factories;
+namespace Braspag\Http\Factories\Pagador;
 
 use Braspag\Entities\Pagador\Parameters;
+use Braspag\Http\Factories\Shared\ClientFactoryTrait;
 use GuzzleHttp\Client;
 
 class ClientFactory
 {
+    use ClientFactoryTrait;
+
     /**
      * The API Base URL for creating transactions
      *
@@ -28,43 +31,36 @@ class ClientFactory
     ];
 
     /**
-     * @var string
-     */
-    private static string $sdkVersion = '1.4.0';
-
-    /**
-     * @param bool $apiQuery
+     * @param bool $isQuery
      * @param Parameters|null $parameters
      * @return Client
      */
-    public static function create(bool $apiQuery, Parameters $parameters = null): Client
+    public static function create(bool $isQuery, Parameters $parameters = null): Client
     {
         $parameters = $parameters ?: new Parameters();
 
-        $host = $_SERVER['HTTP_HOST'] ?? '';
-
         return new Client([
-            'base_uri' => static::getApiUrl($apiQuery, $parameters),
+            'base_uri' => static::getApiUrl($isQuery, $parameters),
             'timeout' => $parameters->getTimeout(),
             'headers' => [
                 'MerchantId' => $parameters->getMerchantId(),
                 'MerchantKey' => $parameters->getMerchantKey(),
                 'Content-Type' => 'application/json',
-                'User-Agent' => trim("braspag-pagador-php-sdk/" . static::$sdkVersion . "; {$host}")
+                'User-Agent' => static::getUserAgent()
             ]
         ]);
     }
 
     /**
-     * @param bool $apiQuery
+     * @param bool $isQuery
      * @param Parameters $parameters
      * @return string
      */
-    private static function getApiUrl(bool $apiQuery, Parameters $parameters): string
+    private static function getApiUrl(bool $isQuery, Parameters $parameters): string
     {
         $environment = $parameters->getSandbox() ? 'sandbox' : 'production';
 
-        return $apiQuery
+        return $isQuery
             ? self::$queryBaseUrls[$environment]
             : self::$transactionBaseUrls[$environment];
     }
