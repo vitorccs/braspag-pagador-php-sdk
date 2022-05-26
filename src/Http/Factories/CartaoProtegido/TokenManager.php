@@ -7,7 +7,7 @@ use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Http\Factories\Shared\ClientFactoryTrait;
 use GuzzleHttp\Client;
 
-class AccessTokenManager
+class TokenManager
 {
     use ClientFactoryTrait;
 

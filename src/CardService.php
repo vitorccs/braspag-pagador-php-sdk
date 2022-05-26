@@ -4,12 +4,22 @@ namespace Braspag;
 
 use Braspag\Converters\CardConverter;
 use Braspag\Entities\CartaoProtegido\Card as CartaoProtegidoCard;
+use Braspag\Entities\CartaoProtegido\Parameters;
 use Braspag\Entities\Pagador\Cards\Card as PagadorCard;
 use Braspag\Exceptions\BraspagProviderException;
+use Braspag\Http\Factories\CartaoProtegido\ClientFactory;
 use Braspag\Http\Resource;
 
 class CardService extends Resource
 {
+    /**
+     * @throws Exceptions\BraspagRequestException
+     */
+    public function __construct(?Parameters $parameters = null)
+    {
+        parent::__construct(ClientFactory::create($parameters));
+    }
+
     /**
      * @param PagadorCard|CartaoProtegidoCard|array $data
      * @return object|null

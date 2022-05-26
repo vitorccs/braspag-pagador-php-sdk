@@ -35,7 +35,7 @@ class ClientFactory
             'timeout' => $parameters->getTimeout(),
             'headers' => [
                 'MerchantId' => $parameters->getMerchantId(),
-                'Authorization' => 'Bearer ' . AccessTokenManager::get($parameters),
+                'Authorization' => 'Bearer ' . TokenManager::get($parameters),
                 'Content-Type' => 'application/json',
                 'User-Agent' => static::getUserAgent()
             ]

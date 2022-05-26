@@ -2,16 +2,18 @@
 
 namespace Braspag;
 
+use Braspag\Entities\Pagador\Parameters;
+use Braspag\Http\Factories\Pagador\ClientFactory;
 use Braspag\Http\Resource;
 
 class QueryService extends Resource
 {
     /**
-     * @return bool
+     * @param Parameters|null $parameters
      */
-    public static function isQueryApi(): bool
+    public function __construct(?Parameters $parameters = null)
     {
-        return true;
+        parent::__construct(ClientFactory::create(true, $parameters));
     }
 
     /**

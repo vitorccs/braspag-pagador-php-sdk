@@ -2,13 +2,11 @@
 
 namespace Braspag\Http;
 
-use Braspag\Entities\Pagador\Parameters;
 use Braspag\Exceptions\BraspagException;
 use Braspag\Exceptions\BraspagProviderException;
 use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Exceptions\BraspagValidationException;
 use Braspag\Http\Factories\Fake\FakeClientFactory;
-use Braspag\Http\Factories\Pagador\ClientFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -23,11 +21,11 @@ class Api
     protected Client $client;
 
     /**
-     * @param Parameters|null $parameters
+     * @param Client $client
      */
-    public function __construct(bool $isQuery, Parameters $parameters = null)
+    public function __construct(Client $client)
     {
-        $this->client = ClientFactory::create($isQuery, $parameters);
+        $this->client = $client;
     }
 
     /**
