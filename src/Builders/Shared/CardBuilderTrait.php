@@ -5,8 +5,61 @@ namespace Braspag\Builders\Shared;
 use Braspag\Exceptions\BraspagBuilderException;
 use Braspag\Helpers\CardHelper;
 
-trait CardTrait
+trait CardBuilderTrait
 {
+    /**
+     * @param string $alias
+     * @return self
+     */
+    public function setAlias(string $alias): self
+    {
+        $this->card->Alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * @param string $expirationDate
+     * @return self
+     * @throws BraspagBuilderException
+     */
+    public function setExpirationDate(string $expirationDate): self
+    {
+        $expirationDate = $this->validateExpirationDate($expirationDate);
+
+        $this->card->ExpirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * @param string $holder
+     * @return self
+     * @throws BraspagBuilderException
+     */
+    public function setHolder(string $holder): self
+    {
+        $holder = $this->validateNotEmpty($holder, 'Card Holder');
+
+        $this->card->Holder = $holder;
+
+        return $this;
+    }
+
+    /**
+     * @param string $code
+     * @return self
+     * @throws BraspagBuilderException
+     */
+    public function setSecurityCode(string $code): self
+    {
+        $code = $this->validateSecurityCode($code);
+
+        $this->card->SecurityCode = $code;
+
+        return $this;
+    }
+
     /**
      * @param string $value
      * @param string $field
@@ -29,7 +82,7 @@ trait CardTrait
      * @return string
      * @throws BraspagBuilderException
      */
-    private function validateCardNumber(string $cardNumber): string
+    protected function validateCardNumber(string $cardNumber): string
     {
         $cardNumber = trim($cardNumber);
 
@@ -43,7 +96,7 @@ trait CardTrait
     /**
      * @throws BraspagBuilderException
      */
-    private function validateExpirationDate(string $expirationDate): string
+    protected function validateExpirationDate(string $expirationDate): string
     {
         $expirationDate = trim($expirationDate);
 
@@ -59,7 +112,7 @@ trait CardTrait
      * @return string
      * @throws BraspagBuilderException
      */
-    private function validateSecurityCode(string $code): string
+    protected function validateSecurityCode(string $code): string
     {
         $code = trim($code) ?: null;
 

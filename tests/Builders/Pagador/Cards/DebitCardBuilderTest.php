@@ -1,6 +1,6 @@
 <?php
 
-namespace Braspag\Test\Builders\Cards;
+namespace Braspag\Test\Builders\Pagador\Cards;
 
 use Braspag\Builders\Pagador\Cards\DebitCardBuilder;
 use Braspag\Entities\Pagador\Cards\DebitCard;

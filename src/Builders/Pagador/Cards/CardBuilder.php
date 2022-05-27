@@ -2,14 +2,14 @@
 
 namespace Braspag\Builders\Pagador\Cards;
 
-use Braspag\Builders\Shared\CardTrait;
+use Braspag\Builders\Shared\CardBuilderTrait;
 use Braspag\Entities\Pagador\Cards\Card;
 use Braspag\Exceptions\BraspagBuilderException;
 use Braspag\Helpers\CardHelper;
 
 abstract class CardBuilder
 {
-    use CardTrait;
+    use CardBuilderTrait;
 
     /**
      * @var Card
@@ -29,34 +29,6 @@ abstract class CardBuilder
     }
 
     /**
-     * @param string $holder
-     * @return $this
-     * @throws BraspagBuilderException
-     */
-    public function setHolder(string $holder): self
-    {
-        $holder = $this->validateNotEmpty($holder, 'Card Holder');
-
-        $this->card->Holder = $holder;
-
-        return $this;
-    }
-
-    /**
-     * @param string $expirationDate
-     * @return $this
-     * @throws BraspagBuilderException
-     */
-    public function setExpirationDate(string $expirationDate): self
-    {
-        $expirationDate = $this->validateExpirationDate($expirationDate);
-
-        $this->card->ExpirationDate = $expirationDate;
-
-        return $this;
-    }
-
-    /**
      * @param string $brand
      * @return $this
      * @throws BraspagBuilderException
@@ -71,37 +43,12 @@ abstract class CardBuilder
     }
 
     /**
-     * @param string $code
-     * @return $this
-     * @throws BraspagBuilderException
-     */
-    public function setSecurityCode(string $code): self
-    {
-        $code = $this->validateSecurityCode($code);
-
-        $this->card->SecurityCode = $code;
-
-        return $this;
-    }
-
-    /**
      * @param bool $save
      * @return $this
      */
     public function setSaveCard(bool $save): self
     {
         $this->card->SaveCard = $save;
-
-        return $this;
-    }
-
-    /**
-     * @param string $alias
-     * @return $this
-     */
-    public function setAlias(string $alias): self
-    {
-        $this->card->Alias = $alias;
 
         return $this;
     }

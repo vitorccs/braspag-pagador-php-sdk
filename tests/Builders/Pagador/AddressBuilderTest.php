@@ -1,6 +1,6 @@
 <?php
 
-namespace Braspag\Test\Builders;
+namespace Braspag\Test\Builders\Pagador;
 
 use Braspag\Builders\Pagador\AddressBuilder;
 use Braspag\Entities\Pagador\Address;

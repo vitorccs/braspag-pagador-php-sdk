@@ -1,6 +1,6 @@
 <?php
 
-namespace Braspag\Test\Builders\Cards;
+namespace Braspag\Test\Builders\Pagador\Cards;
 
 use Braspag\Builders\Pagador\Cards\CreditCardBuilder;
 use Braspag\Exceptions\BraspagBuilderException;
@@ -19,18 +19,9 @@ class CardBuilderTest extends TestCase
     {
         $this->expectException(BraspagBuilderException::class);
 
-        CreditCardBuilder::create()
-            ->setCardNumber($numbers[0]);
-    }
-
-    /**
-     * @dataProvider invalidCardSecurityCode
-     */
-    public function test_invalid_security_code(bool $valid, array $codes)
-    {
-        $this->expectException(BraspagBuilderException::class);
-
-        CreditCardBuilder::create()
-            ->setSecurityCode($codes[0]);
+        foreach ($numbers as $number) {
+            CreditCardBuilder::create()
+                ->setCardNumber($number);
+        }
     }
 }

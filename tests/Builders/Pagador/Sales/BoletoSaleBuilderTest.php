@@ -1,6 +1,6 @@
 <?php
 
-namespace Braspag\Test\Builders\Sales;
+namespace Braspag\Test\Builders\Pagador\Sales;
 
 use Braspag\Builders\Pagador\CustomerBuilder;
 use Braspag\Builders\Pagador\Sales\BoletoSaleBuilder;

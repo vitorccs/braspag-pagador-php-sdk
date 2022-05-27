@@ -82,6 +82,28 @@ trait CardDataProvider
         ];
     }
 
+    public function invalidExpirationDate(): array
+    {
+        $currYear = intval(date('Y'));
+        $pastYear = $currYear - 1;
+
+        $samples = [
+            'abc',
+            '',
+            '1',
+            '1/2',
+            '01/02',
+            '/2',
+            '1/',
+            "01/${$pastYear}",
+            "13/${$currYear}"
+        ];
+
+        return [
+            'invalid' => [false, $samples]
+        ];
+    }
+
     public function invalidCardBrand(): array
     {
         $samples = [
