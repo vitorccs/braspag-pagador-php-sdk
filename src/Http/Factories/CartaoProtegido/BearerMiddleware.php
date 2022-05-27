@@ -14,9 +14,11 @@ class BearerMiddleware
      */
     public static function handle(Parameters $parameters): Closure
     {
-        return function (callable $handler) use ($parameters) {
-            return function (RequestInterface $request, array $options) use ($handler, $parameters) {
-                $request = $request->withHeader('Authorization', 'Bearer ' . TokenManager::get($parameters));
+        $tokenManager = new TokenManager($parameters);
+
+        return function (callable $handler) use ($tokenManager) {
+            return function (RequestInterface $request, array $options) use ($handler, $tokenManager) {
+                $request = $request->withHeader('Authorization', 'Bearer ' . $tokenManager->getToken());
                 return $handler($request, $options);
             };
         };

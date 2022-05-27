@@ -4,8 +4,10 @@ namespace Braspag\Http\Factories\CartaoProtegido;
 
 use Braspag\Entities\CartaoProtegido\Parameters;
 use Braspag\Exceptions\BraspagRequestException;
+use Braspag\Http\Factories\Fake\FakeClientFactory;
 use Braspag\Http\Factories\Shared\ClientFactoryTrait;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 
 class TokenManager
 {
@@ -19,7 +21,7 @@ class TokenManager
     /**
      * @var int
      */
-    private static int $lastTimestamp = 0;
+    protected static int $lastTimestamp = 0;
 
     /**
      * @var int
@@ -29,14 +31,14 @@ class TokenManager
     /**
      * @var int
      */
-    private static int $timestampOffset = 60;
+    protected static int $timestampOffset = 60;
 
     /**
      * The API Base URL for authentication
      *
      * @var string[]
      */
-    private static array $authBaseUrls = [
+    protected static array $authBaseUrls = [
         'sandbox' => 'https://authsandbox.braspag.com.br/oauth2/token',
         'production' => 'https://auth.braspag.com.br/oauth2/token'
     ];
@@ -44,17 +46,47 @@ class TokenManager
     /**
      * @var string
      */
-    private static string $defaultErrorMessage = 'OAuth2 Authentication failed';
+    protected static string $defaultErrorMessage = 'OAuth2 Authentication failed';
+
+    /**
+     * @var Parameters
+     */
+    private Parameters $parameters;
+
+    /**
+     * @var Client
+     */
+    private Client $client;
 
     /**
      * @param Parameters $parameters
+     */
+    public function __construct(Parameters $parameters)
+    {
+        $this->parameters = $parameters;
+        $this->client = new Client([
+            'base_uri' => static::getApiUrl(),
+            'timeout' => $this->parameters->getTimeout(),
+            'auth' => [
+                $this->parameters->getClientId(),
+                $this->parameters->getClientSecret()
+            ],
+            'headers' => [
+                'MerchantId' => $this->parameters->getMerchantId(),
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'User-Agent' => self::getUserAgent()
+            ]
+        ]);
+    }
+
+    /**
      * @return string
      * @throws BraspagRequestException
      */
-    public static function get(Parameters $parameters): string
+    public function getToken(): string
     {
-        if (self::isExpired()) {
-            self::retrieve($parameters);
+        if ($this->isExpired()) {
+            $this->retrieve();
         }
         return self::$token;
     }
@@ -62,7 +94,7 @@ class TokenManager
     /**
      * @return bool
      */
-    public static function isExpired(): bool
+    public function isExpired(): bool
     {
         if (empty(self::$token)) return true;
 
@@ -74,34 +106,29 @@ class TokenManager
     }
 
     /**
-     * @param Parameters $parameters
+     * @param MockHandler $handler
+     * @return TokenManager
+     */
+    public function setFakeClient(MockHandler $handler): self
+    {
+        $this->client = FakeClientFactory::create($handler);
+        return $this;
+    }
+
+    /**
      * @return void
      * @throws BraspagRequestException
      */
-    private static function retrieve(Parameters $parameters): void
+    protected function retrieve(): void
     {
         try {
-            $client = new Client([
-                'base_uri' => static::getApiUrl($parameters),
-                'timeout' => $parameters->getTimeout(),
-                'auth' => [
-                    $parameters->getClientId(),
-                    $parameters->getClientSecret()
-                ],
-                'headers' => [
-                    'MerchantId' => $parameters->getMerchantId(),
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                    'User-Agent' => self::getUserAgent()
-                ]
-            ]);
-
-            $response = $client->post('', ['form_params' => [
+            $response = $this->client->post('', ['form_params' => [
                 'grant_type' => 'client_credentials'
             ]]);
 
             $contents = $response->getBody()->getContents();
 
-            self::updateToken($contents);
+            $this->updateToken($contents);
 
         } catch (\Throwable $e) {
             throw new BraspagRequestException($e->getMessage(), $e->getCode());
@@ -113,7 +140,7 @@ class TokenManager
      * @return void
      * @throws BraspagRequestException
      */
-    private static function updateToken(string $contents): void
+    private function updateToken(string $contents): void
     {
         $jsonResponse = json_decode($contents);
         $accessToken = $jsonResponse->access_token ?? null;
@@ -122,6 +149,7 @@ class TokenManager
             self::$lastTimestamp = self::nowTimestamp();
             self::$expiresIn = $jsonResponse->expires_in ?? 0;
             self::$token = $accessToken;
+            return;
         }
 
         $errorDescription = $jsonResponse->error_description
@@ -140,12 +168,11 @@ class TokenManager
     }
 
     /**
-     * @param Parameters $parameters
      * @return string
      */
-    private static function getApiUrl(Parameters $parameters): string
+    private function getApiUrl(): string
     {
-        $environment = $parameters->getSandbox() ? 'sandbox' : 'production';
+        $environment = $this->parameters->getSandbox() ? 'sandbox' : 'production';
 
         return self::$authBaseUrls[$environment];
     }

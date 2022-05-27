@@ -39,7 +39,11 @@ class ParametersTest extends TestCase
     {
         $random = ParametersHelper::randomValues();
 
-        $args = array_values($random);
+        $args = [
+            $random[AbstractParameters::BRASPAG_MERCHANT_ID],
+            $random[AbstractParameters::BRASPAG_SANDBOX],
+            $random[AbstractParameters::BRASPAG_TIMEOUT]
+        ];
 
         $parameters = $this->getAbstractParametersMock($args);
 
