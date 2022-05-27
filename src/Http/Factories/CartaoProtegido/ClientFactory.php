@@ -3,9 +3,10 @@
 namespace Braspag\Http\Factories\CartaoProtegido;
 
 use Braspag\Entities\CartaoProtegido\Parameters;
-use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Http\Factories\Shared\ClientFactoryTrait;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\HandlerStack;
 
 class ClientFactory
 {
@@ -24,18 +25,21 @@ class ClientFactory
     /**
      * @param Parameters|null $parameters
      * @return Client
-     * @throws BraspagRequestException
      */
     public static function create(Parameters $parameters = null): Client
     {
         $parameters = $parameters ?: new Parameters();
 
+        $handlerStack = new HandlerStack();
+        $handlerStack->setHandler(new CurlHandler());
+        $handlerStack->push(BearerMiddleware::handle($parameters));
+
         return new Client([
             'base_uri' => static::getApiUrl($parameters),
             'timeout' => $parameters->getTimeout(),
+            'handler' => $handlerStack,
             'headers' => [
                 'MerchantId' => $parameters->getMerchantId(),
-                'Authorization' => 'Bearer ' . TokenManager::get($parameters),
                 'Content-Type' => 'application/json',
                 'User-Agent' => static::getUserAgent()
             ]

@@ -2,13 +2,15 @@
 
 namespace Braspag\Test;
 
-use Braspag\Http\Resource;
 use Braspag\SaleService;
 use Braspag\Test\Shared\FakeResponse;
 
 class SaleServiceTest extends BaseTest
 {
-    public function resource(): Resource
+    /**
+     * @return SaleService
+     */
+    public function resource(): SaleService
     {
         return new SaleService();
     }

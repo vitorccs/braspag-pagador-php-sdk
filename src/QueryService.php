@@ -13,7 +13,9 @@ class QueryService extends Resource
      */
     public function __construct(?Parameters $parameters = null)
     {
-        parent::__construct(ClientFactory::create(true, $parameters));
+        $client = ClientFactory::create(true, $parameters);
+
+        parent::__construct($client);
     }
 
     /**

@@ -15,7 +15,9 @@ class SaleService extends Resource
      */
     public function __construct(?Parameters $parameters = null)
     {
-        parent::__construct(ClientFactory::create(false, $parameters));
+        $client = ClientFactory::create(false, $parameters);
+
+        parent::__construct($client);
     }
 
     /**

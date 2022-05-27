@@ -17,11 +17,13 @@ class CardService extends Resource
      */
     public function __construct(?Parameters $parameters = null)
     {
-        parent::__construct(ClientFactory::create($parameters));
+        $client = ClientFactory::create($parameters);
+
+        parent::__construct($client);
     }
 
     /**
-     * @param PagadorCard|CartaoProtegidoCard|array $data
+     * @param PagadorCard|CartaoProtegidoCard|object|array $data
      * @return object|null
      * @throws BraspagProviderException
      * @throws Exceptions\BraspagException
@@ -34,8 +36,12 @@ class CardService extends Resource
             $data = CardConverter::toCartaoProtegidoCard($data);
         }
 
+        if (is_array($data)) {
+            $data = (object) $data;
+        }
+
         return $this->api->post('/v1/token', [
-            'Alias' => $data->Alias,
+            'Alias' => $data->Alias ?? null,
             'Card' => $data
         ]);
     }
