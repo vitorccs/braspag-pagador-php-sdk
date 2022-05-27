@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Braspag\Test\Entities\Payment;
+namespace Braspag\Test\Entities\Pagador\Payment;
 
 use Braspag\Entities\Pagador\Cards\DebitCard;
 use Braspag\Entities\Pagador\Payment\DebitCardPayment;

@@ -7,11 +7,6 @@ use Braspag\Exceptions\BraspagParameterException;
 class AbstractParameters
 {
     /**
-     * The ENV name for HTTP Timeout parameter
-     */
-    const BRASPAG_TIMEOUT = 'BRASPAG_TIMEOUT';
-
-    /**
      * The ENV name for Merchant ID
      */
     const BRASPAG_MERCHANT_ID = 'BRASPAG_MERCHANT_ID';
@@ -20,6 +15,11 @@ class AbstractParameters
      * The ENV name for toggling Sandbox mode
      */
     const BRASPAG_SANDBOX = 'BRASPAG_SANDBOX';
+
+    /**
+     * The ENV name for HTTP Timeout parameter
+     */
+    const BRASPAG_TIMEOUT = 'BRASPAG_TIMEOUT';
 
     /**
      * The Merchant ID
@@ -55,6 +55,25 @@ class AbstractParameters
      * @var bool
      */
     protected static bool $defaultSandbox = false;
+
+    /**
+     * The Client Secret
+     *
+     * @var string|null
+     */
+    private ?string $clientSecret;
+
+    /**
+     * @throws BraspagParameterException
+     */
+    public function __construct(string $merchantId = null,
+                                bool   $sandbox = null,
+                                int    $timeout = null)
+    {
+        $this->merchantId = $this->setMerchantId($merchantId);
+        $this->sandbox = $this->setSandbox($sandbox);
+        $this->timeout = $this->setTimeout($timeout);
+    }
 
     /**
      * @return string
@@ -99,7 +118,7 @@ class AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    protected function setMerchantId(string $merchantId = null): string
+    private function setMerchantId(string $merchantId = null): string
     {
         $merchantId = $merchantId ?: getenv(static::BRASPAG_MERCHANT_ID) ?: null;
 
@@ -114,7 +133,7 @@ class AbstractParameters
      * @param int|null $timeout
      * @throws BraspagParameterException
      */
-    protected static function setTimeout(int $timeout = null): int
+    private static function setTimeout(int $timeout = null): int
     {
         $envValue = getenv(static::BRASPAG_TIMEOUT);
 
@@ -137,7 +156,7 @@ class AbstractParameters
      * @param bool|null $sandbox
      * @throws BraspagParameterException
      */
-    protected static function setSandbox(bool $sandbox = null): bool
+    private static function setSandbox(bool $sandbox = null): bool
     {
         $envValue = strtolower(getenv(static::BRASPAG_SANDBOX));
 

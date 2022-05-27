@@ -13,32 +13,6 @@ class CardBuilderTraitTest extends TestCase
     use EntityDataProviders, CardDataProvider;
 
     /**
-     * @dataProvider invalidCardNumbersAuto
-     */
-    public function test_invalid_number(bool $valid, array $numbers)
-    {
-        $this->expectException(BraspagBuilderException::class);
-
-        foreach ($numbers as $number) {
-            CardBuilder::create()
-                ->setCardNumber($number);
-        }
-    }
-
-    /**
-     * @dataProvider invalidCardSecurityCode
-     */
-    public function test_invalid_security_code(bool $valid, array $codes)
-    {
-        $this->expectException(BraspagBuilderException::class);
-
-        foreach ($codes as $code) {
-            CardBuilder::create()
-                ->setSecurityCode($code);
-        }
-    }
-
-    /**
      * @dataProvider invalidExpirationDate
      */
     public function test_invalid_expiration_date(bool $valid, array $expirationDates)
@@ -60,5 +34,31 @@ class CardBuilderTraitTest extends TestCase
 
         CardBuilder::create()
             ->setHolder('');
+    }
+
+    /**
+     * @dataProvider invalidCardSecurityCode
+     */
+    public function test_invalid_security_code(bool $valid, array $codes)
+    {
+        $this->expectException(BraspagBuilderException::class);
+
+        foreach ($codes as $code) {
+            CardBuilder::create()
+                ->setSecurityCode($code);
+        }
+    }
+
+    /**
+     * @dataProvider invalidCardNumbersAuto
+     */
+    public function test_invalid_card_number(bool $valid, array $numbers)
+    {
+        $this->expectException(BraspagBuilderException::class);
+
+        foreach ($numbers as $number) {
+            CardBuilder::create()
+                ->setCardNumber($number);
+        }
     }
 }

@@ -15,7 +15,7 @@ class CreditCardBuilderTest extends TestCase
     use EntityDataProviders, CardDataProvider;
 
     /**
-     * @dataProvider validCreditCard
+     * @dataProvider validPagadorCreditCard
      */
     public function teste_create_card(array $properties)
     {

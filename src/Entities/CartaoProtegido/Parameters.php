@@ -40,11 +40,10 @@ class Parameters extends AbstractParameters
                                 bool   $sandbox = null,
                                 int    $timeout = null)
     {
-        $this->merchantId = $this->setMerchantId($merchantId);
+        parent::__construct($merchantId, $sandbox, $timeout);
+
         $this->clientId = $this->setClientId($clientId);
         $this->clientSecret = $this->setClientSecret($clientSecret);
-        $this->sandbox = $this->setSandbox($sandbox);
-        $this->timeout = $this->setTimeout($timeout);
     }
 
     /**

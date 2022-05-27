@@ -85,7 +85,6 @@ trait CardDataProvider
     public function invalidExpirationDate(): array
     {
         $currYear = intval(date('Y'));
-        $pastYear = $currYear - 1;
 
         $samples = [
             'abc',
@@ -95,8 +94,9 @@ trait CardDataProvider
             '01/02',
             '/2',
             '1/',
-            "01/${$pastYear}",
-            "13/${$currYear}"
+            "13/${currYear}",
+            FakerHelper::get()->date('m/Y', strtotime('now -1 month')),
+            FakerHelper::get()->creditCardExpirationDateString(false, 'm/Y'),
         ];
 
         return [

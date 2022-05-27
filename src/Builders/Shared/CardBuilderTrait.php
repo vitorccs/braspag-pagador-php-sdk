@@ -61,23 +61,6 @@ trait CardBuilderTrait
     }
 
     /**
-     * @param string $value
-     * @param string $field
-     * @return string
-     * @throws BraspagBuilderException
-     */
-    protected function validateNotEmpty(string $value, string $field): string
-    {
-        $value = trim($value);
-
-        if (empty($value)) {
-            throw new BraspagBuilderException($field);
-        }
-
-        return $value;
-    }
-
-    /**
      * @param string $cardNumber
      * @return string
      * @throws BraspagBuilderException
@@ -105,6 +88,23 @@ trait CardBuilderTrait
         }
 
         return $expirationDate;
+    }
+
+    /**
+     * @param string $value
+     * @param string $field
+     * @return string
+     * @throws BraspagBuilderException
+     */
+    protected function validateNotEmpty(string $value, string $field): string
+    {
+        $value = trim($value);
+
+        if (empty($value)) {
+            throw new BraspagBuilderException($field);
+        }
+
+        return $value;
     }
 
     /**

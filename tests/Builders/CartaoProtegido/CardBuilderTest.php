@@ -14,14 +14,10 @@ class CardBuilderTest extends TestCase
     use EntityDataProviders, CardDataProvider;
 
     /**
-     * @dataProvider validCreditCard
+     * @dataProvider validCartaoProtegidoCard
      */
     public function teste_create_card(array $properties)
     {
-        // Pagador and CartaoProtegido has different key names
-        $properties['Number'] = $properties['CardNumber'];
-        unset($properties['CardNumber']);
-
         $card = CardBuilder::create()
             ->setCardNumber($properties['Number'])
             ->setHolder($properties['Holder'])
