@@ -28,15 +28,19 @@ _* Obrigatório apenas se for utilizar a API Cartão Protegido_
 Podem ser definidos por variáveis de ambiente:
 
 ```bash
-# ex: em um arquivo .env
+# Em um arquivo .env do seu projeto:
 BRASPAG_MERCHANT_ID=myMerchantId
 BRASPAG_MERCHANT_KEY=myMerchantKey
 BRASPAG_CLIENT_ID=myClientId
 BRASPAG_CLIENT_SECRET=myClientSecret
 BRASPAG_SANDBOX=true
+
+# Os serviços captarão automaticamente
+$saleService = new \Braspag\SaleService();
+$cardService = new \Braspag\CardService();
 ```
 
-ou passados como argumento do serviço:
+Ou passados como argumentos do serviço:
 
 ```php
 # Para serviços da API Pagador
@@ -45,7 +49,6 @@ $parameters = new \Braspag\Entities\Pagador\Parameters(
     'myMerchantKey', 
     true // modo sandbox
 );
-
 $saleService = new \Braspag\SaleService($parameters);
 
 # Para serviços da API Cartão Protegido
@@ -55,7 +58,6 @@ $parameters = new \Braspag\Entities\CartaoProtegido\Parameters(
     'myClientSecret', 
     true // modo sandbox
 );
-
 $cardService = new \Braspag\CardService($parameters);
 ```
 
@@ -238,7 +240,9 @@ $debitCardSale = DebitCardSaleBuilder::create(Providers::SIMULADO, $amount)
 
 ### API Cartão Protegido - Criando Cartão de Crédito
 ```php
-$card = \Braspag\Builders\CartaoProtegido\CardBuilder::create()
+use Braspag\Builders\CartaoProtegido\CardBuilder;
+
+$card = CardBuilder::create()
     ->setCardNumber('4551870000000183')
     ->setHolder('Joao da Silva')
     ->setAlias('meu_alias')
