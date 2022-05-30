@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Braspag\Test\Exceptions;
 
-use Braspag\Entities\Parameters;
+use Braspag\Entities\Pagador\Parameters;
 use Braspag\Exceptions\BraspagParameterException;
 use Braspag\Test\Shared\ParametersHelper;
 use PHPUnit\Framework\TestCase;

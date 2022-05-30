@@ -82,6 +82,28 @@ trait CardDataProvider
         ];
     }
 
+    public function invalidExpirationDate(): array
+    {
+        $currYear = intval(date('Y'));
+
+        $samples = [
+            'abc',
+            '',
+            '1',
+            '1/2',
+            '01/02',
+            '/2',
+            '1/',
+            "13/${currYear}",
+            FakerHelper::get()->date('m/Y', strtotime('now -1 month')),
+            FakerHelper::get()->creditCardExpirationDateString(false, 'm/Y'),
+        ];
+
+        return [
+            'invalid' => [false, $samples]
+        ];
+    }
+
     public function invalidCardBrand(): array
     {
         $samples = [

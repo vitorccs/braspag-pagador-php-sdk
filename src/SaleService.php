@@ -2,12 +2,24 @@
 
 namespace Braspag;
 
-use Braspag\Entities\Sale;
+use Braspag\Entities\Pagador\Parameters;
+use Braspag\Entities\Pagador\Sale;
 use Braspag\Exceptions\BraspagProviderException;
+use Braspag\Http\Factories\Pagador\ClientFactory;
 use Braspag\Http\Resource;
 
 class SaleService extends Resource
 {
+    /**
+     * @param Parameters|null $parameters
+     */
+    public function __construct(?Parameters $parameters = null)
+    {
+        $client = ClientFactory::create(false, $parameters);
+
+        parent::__construct($client);
+    }
+
     /**
      * @param Sale|array $data
      * @param bool $checkSuccess

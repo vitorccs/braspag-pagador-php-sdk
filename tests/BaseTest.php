@@ -3,15 +3,22 @@
 namespace Braspag\Test;
 
 use Braspag\Http\Resource;
+use Braspag\Test\Shared\FakeResponseHelper;
 use Braspag\Test\Shared\ParametersHelper;
-use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
+    /**
+     * @var Resource
+     */
     protected Resource $fakeResource;
 
+    /**
+     * @return Resource
+     */
     abstract public function resource(): Resource;
 
     /**
@@ -22,12 +29,12 @@ abstract class BaseTest extends TestCase
         ParametersHelper::setEnv();
     }
 
-    public function getFakeResource(Response $response): Resource
+    /**
+     * @param Response|RequestException $response
+     * @return Resource
+     */
+    public function getFakeResource($response): Resource
     {
-        $handler = new MockHandler([]);
-        $handler->append($response);
-
-        return $this->resource()
-            ->setFakeClient($handler);
+        return FakeResponseHelper::addMockHandler($this->resource(), $response);
     }
 }

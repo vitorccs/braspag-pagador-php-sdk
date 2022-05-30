@@ -2,13 +2,15 @@
 
 namespace Braspag\Test;
 
-use Braspag\Http\Resource;
 use Braspag\QueryService;
 use Braspag\Test\Shared\FakeResponse;
 
 class QueryServiceTest extends BaseTest
 {
-    public function resource(): Resource
+    /**
+     * @return QueryService
+     */
+    public function resource(): QueryService
     {
         return new QueryService();
     }

@@ -61,7 +61,7 @@ trait EntityDataProviders
 
     // card data
 
-    public function validCreditCard(): array
+    public function validPagadorCreditCard(): array
     {
         return [
             'valid' => [
@@ -94,6 +94,21 @@ trait EntityDataProviders
                     'Alias' => FakerHelper::get()->word(),
                     'CardOnFile' => null,
                     'CardToken' => null
+                ]
+            ]
+        ];
+    }
+
+    public function validCartaoProtegidoCard(): array
+    {
+        return [
+            'valid' => [
+                [
+                    'Number' => FakerHelper::get()->creditCardNumber(),
+                    'Holder' => FakerHelper::get()->name(),
+                    'ExpirationDate' => FakerHelper::get()->creditCardExpirationDateString(true, 'm/Y'),
+                    'SecurityCode' => '' . FakerHelper::get()->numberBetween(100, 9999),
+                    'Alias' => FakerHelper::get()->word()
                 ]
             ]
         ];
@@ -147,7 +162,7 @@ trait EntityDataProviders
                     'Recurrent' => FakerHelper::get()->boolean(),
                     'SoftDescriptor' => FakerHelper::get()->word(),
                     'DoSplit' => FakerHelper::get()->boolean(),
-                    'CreditCard' => $this->validCreditCard()['valid'][0]
+                    'CreditCard' => $this->validPagadorCreditCard()['valid'][0]
                 ]
             ]
         ];

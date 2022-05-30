@@ -2,7 +2,9 @@
 
 namespace Braspag\Test\Shared;
 
-use Braspag\Entities\Parameters;
+use Braspag\Entities\Pagador\Parameters as PagadorParameters;
+use Braspag\Entities\CartaoProtegido\Parameters as CartaoProtegidoParameters;
+use Braspag\Entities\Shared\AbstractParameters;
 
 class ParametersHelper
 {
@@ -41,10 +43,14 @@ class ParametersHelper
     public static function randomValues(): array
     {
         return [
-            Parameters::BRASPAG_MERCHANT_ID => FakerHelper::get()->word(),
-            Parameters::BRASPAG_MERCHANT_KEY => FakerHelper::get()->word(),
-            Parameters::BRASPAG_SANDBOX => FakerHelper::get()->boolean,
-            Parameters::BRASPAG_TIMEOUT => FakerHelper::get()->numberBetween(0, 60)
+            AbstractParameters::BRASPAG_MERCHANT_ID => FakerHelper::get()->word(),
+            AbstractParameters::BRASPAG_SANDBOX => FakerHelper::get()->boolean,
+            AbstractParameters::BRASPAG_TIMEOUT => FakerHelper::get()->numberBetween(0, 60),
+
+            PagadorParameters::BRASPAG_MERCHANT_KEY => FakerHelper::get()->word(),
+            CartaoProtegidoParameters::BRASPAG_CLIENT_ID => FakerHelper::get()->word(),
+
+            CartaoProtegidoParameters::BRASPAG_CLIENT_SECRET => FakerHelper::get()->word(),
         ];
     }
 }

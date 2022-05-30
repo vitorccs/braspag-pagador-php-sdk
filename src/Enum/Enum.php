@@ -6,7 +6,10 @@ use ReflectionClass;
 
 trait Enum
 {
-    public static function getArray()
+    /**
+     * @return array
+     */
+    public static function getArray(): array
     {
         $reflection = new ReflectionClass(get_called_class());
 
