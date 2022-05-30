@@ -1,5 +1,5 @@
 # Braspag Pagador - SDK PHP
-SDK em PHP para API Braspag Pagador
+SDK em PHP para API Braspag Pagador e API Cartão Protegido
 
 ## Requisitos
 * PHP >= 7.4
@@ -14,43 +14,61 @@ composer require vitorccs/braspag-pagador-php-sdk
 ```
 
 ## Parâmetros
-| Parâmetro            | Obrigatório | Padrão | Comentário                                             |
-|----------------------|-------------|--------|--------------------------------------------------------|
-| BRASPAG_MERCHANT_ID  | Sim         | null   | Merchant ID para autenticação                          |
-| BRASPAG_MERCHANT_KEY | Sim         | null   | Merchant Key para autenticação                         |
-| BRASPAG_SANDBOX      | Não         | false  | Habilita o modo Sandbox                                |
-| BRASPAG_TIMEOUT      | Não         | 30     | Timeout em segundos para estabelecer conexão com a API |
+| Parâmetro             | Obrigatório | Padrão | Comentário                                             |
+|-----------------------|-------------|--------|--------------------------------------------------------|
+| BRASPAG_MERCHANT_ID   | Sim         | null   | Merchant ID para autenticação                          |
+| BRASPAG_MERCHANT_KEY  | Sim         | null   | Merchant Key para autenticação                         |
+| BRASPAG_CLIENT_ID     | *Sim        | null   | Client ID para API Cartão Protegido                    |
+| BRASPAG_CLIENT_SECRET | *Sim        | null   | Client Secret para API Cartão Protegido                |
+| BRASPAG_SANDBOX       | Não         | false  | Habilita o modo Sandbox                                |
+| BRASPAG_TIMEOUT       | Não         | 30     | Timeout em segundos para estabelecer conexão com a API |
 
+_* Obrigatório apenas se for utilizar a API Cartão Protegido_
+ 
 Podem ser definidos por variáveis de ambiente:
 
 ```bash
 # ex: em um arquivo .env
 BRASPAG_MERCHANT_ID=myMerchantId
 BRASPAG_MERCHANT_KEY=myMerchantKey
+BRASPAG_CLIENT_ID=myClientId
+BRASPAG_CLIENT_SECRET=myClientSecret
 BRASPAG_SANDBOX=true
 ```
 
 ou passados como argumento do serviço:
 
 ```php
+# Para serviços da API Pagador
 $parameters = new \Braspag\Entities\Pagador\Parameters(
     'myMerchantId',
     'myMerchantKey', 
-    true
+    true // modo sandbox
 );
 
-$transaction = new \Braspag\SaleService($parameters);
+$saleService = new \Braspag\SaleService($parameters);
+
+# Para serviços da API Cartão Protegido
+$parameters = new \Braspag\Entities\CartaoProtegido\Parameters(
+    'myMerchantId',
+    'myClientId'
+    'myClientSecret', 
+    true // modo sandbox
+);
+
+$cardService = new \Braspag\CardService($parameters);
 ```
 
 ## Serviços implementados
 
-### Transação
-
+### API Pagador - Transação
 ```php
 $saleService = new \Braspag\SaleService();
 ```
 Criar Transação (para qualquer Meio de Pagamento)
 ```php
+// Nota: utilize preferencialmente os Sales Builder (descrito mais
+// abaixo na documentação) para gerar o parâmetro $sale
 $response = $saleService->create($sale);
 ```
 Estornar Transação (para qualquer Meio de Pagamento)
@@ -59,7 +77,7 @@ Estornar Transação (para qualquer Meio de Pagamento)
 $response = $saleService->refund($paymentId, $amount);
 ```
 
-### Consultas
+### API Pagador - Consultas
 
 ```php
 $queryService = new \Braspag\QueryService();
@@ -77,24 +95,41 @@ Obter Transação por Recurrent Payment ID (ID de Pagamento Recorrente)
 $response = $queryService->getByRecurrentPaymentId($recurrentPaymentId);
 ```
 
-## Construtores
-Para auxiliar a criar uma Transação, foram disponibilizados alguns construtores (builders):
-
-### Cliente
-
+### API Cartão Protegido
 ```php
-use Braspag\Builders\Pagador\CustomerBuilder;
-
-// Somente Nome é obrigatório para todos os Meios de Pagamento
-$customer = CustomerBuilder::create('Nome Cliente')
-    ->setIdentity('01.027.058/0001-91')
-    ->setEmail('email@email.com')
-    ->setBirthdate('2000-01-01')
-    ->setIpAddress('64.111.123.211')
-    ->get();
+$cardService = new \Braspag\CardService($parameters);
 ```
-### Endereço
+Gerar um Token para um Cartão de Crédito
+```php 
+// Nota: utilize preferencialmente o CardBuilder (descrito mais
+// abaixo na documentação) para gerar o parâmetro $card
+$response = $cardService->createToken($card);
+```
+Obter o Token que está associado ao Alias 
+```php
+$response = $cardService->getTokenByAlias($alias);
+```
+Obter os dados do Cartão pelo seu Token 
+```php
+$response = $cardService->getCardByToken($token);
+```
+Suspender o Token
+```php
+$response = $cardService->suspendToken($token);
+```
+Reativar o Token
+```php
+$response = $cardService->unsuspendToken($token);
+```
+Remover o Token
+```php
+$response = $cardService->removeToken($token);
+```
 
+## Construtores (Builders)
+Para auxiliar a criar uma Transação, foram disponibilizados alguns construtores:
+
+### API Pagador - Criando Endereço
 ```php
 use Braspag\Builders\Pagador\AddressBuilder;
 
@@ -109,7 +144,21 @@ $address = AddressBuilder::create()
     ->get();
 ```
 
-### Pagamento PIX
+### API Pagador - Criando Cliente
+```php
+use Braspag\Builders\Pagador\CustomerBuilder;
+
+// Somente Nome é obrigatório para todos os Meios de Pagamento
+$customer = CustomerBuilder::create('Nome Cliente')
+    ->setIdentity('01.027.058/0001-91')
+    ->setEmail('email@email.com')
+    ->setBirthdate('2000-01-01')
+    ->setAddress($address)
+    ->setIpAddress('64.111.123.211')
+    ->get();
+```
+
+### API Pagador - Criando Pagamento PIX
 
 ```php
 use Braspag\Builders\Pagador\Sales\PixSaleBuilder;
@@ -118,10 +167,11 @@ $amount = 1000; // 10.00
 $pixSale = PixSaleBuilder::create(Providers::CIELO, $amount)
     ->withCustomer($customer)
     ->withMerchantOrderId('000000006')
+    ->setQrCodeExpiration(8200)
     ->get();
 ```
 
-### Pagamento Boleto Bancário
+### API Pagador - Criando Pagamento Boleto Bancário
 
 ```php
 use Braspag\Builders\Pagador\Sales\BoletoSaleBuilder;
@@ -135,10 +185,11 @@ $boletoSale = BoletoSaleBuilder::create(Providers::CIELO, $amount)
     ->get();
 ```
 
-### Pagamento Cartão de Crédito
+### API Pagador - Criando Pagamento Cartão de Crédito
 
 ```php
-use Braspag\Builders\Pagador\Cards\CreditCardBuilder;use Braspag\Builders\Pagador\Sales\CreditCardSaleBuilder;
+use Braspag\Builders\Pagador\Cards\CreditCardBuilder;
+use Braspag\Builders\Pagador\Sales\CreditCardSaleBuilder;
 
 // primeiro, criamos o cartão
 $creditCard = CreditCardBuilder::create()
@@ -161,10 +212,11 @@ $creditCardSale = CreditCardSaleBuilder::create(Providers::SIMULADO, $amount)
     ->get();
 ```
 
-### Pagamento Cartão de Débito
+### API Pagador - Criando Pagamento Cartão de Débito
 
 ```php
-use Braspag\Builders\Pagador\Cards\DebitCardBuilder;use Braspag\Builders\Pagador\Sales\DebitCardSaleBuilder;
+use Braspag\Builders\Pagador\Cards\DebitCardBuilder;
+use Braspag\Builders\Pagador\Sales\DebitCardSaleBuilder;
 
 $debitCard = DebitCardBuilder::create()
     ->setCardNumber('4324017527053834')
@@ -181,6 +233,17 @@ $debitCardSale = DebitCardSaleBuilder::create(Providers::SIMULADO, $amount)
     ->withMerchantOrderId($merchantOrderId)
     ->withDebitCard($debitCard)
     ->setReturnUrl('https://www.myreturnurl.com/path')
+    ->get();
+```
+
+### API Cartão Protegido - Criando Cartão de Crédito
+```php
+$card = \Braspag\Builders\CartaoProtegido\CardBuilder::create()
+    ->setCardNumber('4551870000000183')
+    ->setHolder('Joao da Silva')
+    ->setAlias('meu_alias')
+    ->setExpirationDate('12/2025')
+    ->setSecurityCode('123')
     ->get();
 ```
 
@@ -226,7 +289,12 @@ putenv('BRASPAG_MERCHANT_ID=myMerchantId');
 putenv('BRASPAG_MERCHANT_KEY=myMerchantKey');
 putenv('BRASPAG_SANDBOX=true');
 
-use Braspag\Builders\Pagador\CustomerBuilder;use Braspag\Builders\Pagador\Sales\PixSaleBuilder;use Braspag\Enum\Providers;use Braspag\Exceptions\BraspagProviderException;use Braspag\Exceptions\BraspagRequestException;use Braspag\Exceptions\BraspagValidationException;
+use Braspag\Builders\Pagador\CustomerBuilder;
+use Braspag\Builders\Pagador\Sales\PixSaleBuilder;
+use Braspag\Enum\Providers;
+use Braspag\Exceptions\BraspagProviderException;
+use Braspag\Exceptions\BraspagRequestException;
+use Braspag\Exceptions\BraspagValidationException;
 
 try {
     // CRIANDO UMA TRANSAÇÃO

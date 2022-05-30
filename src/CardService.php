@@ -13,7 +13,7 @@ use Braspag\Http\Resource;
 class CardService extends Resource
 {
     /**
-     * @throws Exceptions\BraspagRequestException
+     * @param Parameters|null $parameters
      */
     public function __construct(?Parameters $parameters = null)
     {
@@ -40,7 +40,7 @@ class CardService extends Resource
             $data = (object) $data;
         }
 
-        return $this->api->post('/v1/token', [
+        return $this->api->post('v1/token', [
             'Alias' => $data->Alias ?? null,
             'Card' => $data
         ]);

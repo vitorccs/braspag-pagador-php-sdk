@@ -51,7 +51,7 @@ class Api
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    public function post(string $endpoint, $data = [])
+    public function post(string $endpoint, $data = null)
     {
         return $this->request('POST', $endpoint, ['json' => $data]);
     }
@@ -65,7 +65,7 @@ class Api
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    public function put(string $endpoint, $data = [])
+    public function put(string $endpoint, $data = null)
     {
         return $this->request('PUT', $endpoint, ['json' => $data]);
     }
@@ -79,7 +79,7 @@ class Api
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    public function delete(string $endpoint, $data = [])
+    public function delete(string $endpoint, $data = null)
     {
         return $this->request('DELETE', $endpoint, ['json' => $data]);
     }
@@ -155,9 +155,13 @@ class Api
     }
 
     /**
-     * Check for Validation errors
+     * Check for API Pagador Validation errors
      *
-     * FORMAT: [{ "Code": int, "Message": string}]
+     * API Pagador format:
+     * [{ "Code": int, "Message": string }]
+     *
+     * API Cartao Protegido format:
+     * { "Errors": [{ "Code": int, "Message": string }] }
      *
      * @param object|array|null $jsonResponse
      * @throws BraspagValidationException
@@ -165,15 +169,17 @@ class Api
      */
     private function checkForValidationException($jsonResponse = null)
     {
-        if (!is_array($jsonResponse) || !count($jsonResponse)) return;
+        $validationErrors = $jsonResponse->Errors ?? $jsonResponse;
 
-        $validationError = $jsonResponse[0];
+        if (!is_array($validationErrors) || !count($validationErrors)) return;
+
+        $validationError = $validationErrors[0];
         $validationMessage = $validationError->Message ?? null;
         $validationCode = is_numeric($validationError->Code ?? null)
             ? intval($validationError->Code)
-            : null;
+            : 0;
 
-        if (is_null($validationCode)) return;
+        if (empty($validationMessage) && empty($validationCode)) return;
 
         throw new BraspagValidationException($validationMessage, $validationCode);
     }
