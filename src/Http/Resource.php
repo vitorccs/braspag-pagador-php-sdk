@@ -2,7 +2,7 @@
 
 namespace Braspag\Http;
 
-use Braspag\Entities\Parameters;
+use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 
 abstract class Resource
@@ -13,19 +13,11 @@ abstract class Resource
     protected Api $api;
 
     /**
-     * @param Parameters|null $parameters
+     * @param Client $client
      */
-    public function __construct(Parameters $parameters = null)
+    public function __construct(Client $client)
     {
-        $this->api = new Api(static::isQueryApi(), $parameters);
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isQueryApi(): bool
-    {
-        return false;
+        $this->api = new Api($client);
     }
 
     /**
