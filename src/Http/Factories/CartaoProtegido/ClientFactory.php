@@ -22,11 +22,7 @@ class ClientFactory
         'production' => 'https://cartaoprotegidoapi.braspag.com.br'
     ];
 
-    /**
-     * @param Parameters|null $parameters
-     * @return Client
-     */
-    public static function create(Parameters $parameters = null): Client
+    public static function create(?Parameters $parameters = null): Client
     {
         $parameters = $parameters ?: new Parameters();
 
@@ -46,10 +42,6 @@ class ClientFactory
         ]);
     }
 
-    /**
-     * @param Parameters $parameters
-     * @return string
-     */
     private static function getApiUrl(Parameters $parameters): string
     {
         $environment = $parameters->getSandbox() ? 'sandbox' : 'production';

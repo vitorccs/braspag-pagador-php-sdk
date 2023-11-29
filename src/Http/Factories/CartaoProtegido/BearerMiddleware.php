@@ -8,10 +8,6 @@ use Psr\Http\Message\RequestInterface;
 
 class BearerMiddleware
 {
-    /**
-     * @param Parameters $parameters
-     * @return Closure
-     */
     public static function handle(Parameters $parameters): Closure
     {
         $tokenManager = new TokenManager($parameters);

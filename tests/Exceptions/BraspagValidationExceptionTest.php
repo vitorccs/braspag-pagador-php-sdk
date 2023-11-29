@@ -23,8 +23,8 @@ class BraspagValidationExceptionTest extends TestCase
     /**
      * @dataProvider apiPagadorValidationErrors
      */
-    public function test_pagador_validation_errors(bool         $checkSuccess,
-                                                   FakeResponse $fakeResponse)
+    public function test_pagador_validation_errors(FakeResponse $fakeResponse,
+                                                   bool         $checkSuccess)
     {
         $fakeJson = $fakeResponse->getJsonResponse();
         $this->expectException(BraspagValidationException::class);
@@ -35,6 +35,24 @@ class BraspagValidationExceptionTest extends TestCase
 
         /** @var SaleService $resource */
         $resource->create([], $checkSuccess);
+    }
+
+    /**
+     * @dataProvider apiPagadorValidationErrors
+     */
+    public function test_pagador_validation_error_code(FakeResponse $fakeResponse)
+    {
+        /** @var SaleService $resource */
+
+        $resource = FakeResponseHelper::addMockHandler(new SaleService(), $fakeResponse);
+
+        try {
+            $resource->create([]);
+        } catch (\Exception $e) {
+            $fakeJson = $fakeResponse->getJsonResponse();
+            $this->assertInstanceOf(BraspagValidationException::class, $e);
+            $this->assertEquals($fakeJson[0]->Code, $e->getErrorCode());
+        }
     }
 
     /**
@@ -56,16 +74,33 @@ class BraspagValidationExceptionTest extends TestCase
         $resource->createToken([]);
     }
 
+    /**
+     * @dataProvider apiCartaoProtegidoValidationErrors
+     */
+    public function test_cartao_protegido_validation_error_code(FakeResponse $fakeResponse)
+    {
+        /** @var CardService $resource */
+        $resource = FakeResponseHelper::addMockHandler(new CardService(), $fakeResponse);
+
+        try {
+            $resource->createToken([]);
+        } catch (\Exception $e) {
+            $fakeJson = $fakeResponse->getJsonResponse();
+            $this->assertInstanceOf(BraspagValidationException::class, $e);
+            $this->assertEquals($fakeJson->Errors[0]->Code, $e->getErrorCode());
+        }
+    }
+
     public function apiPagadorValidationErrors(): array
     {
         return [
             'invalid data with check enabled' => [
+                new FakeResponse(500, [], '[{"Code": 133,"Message": "Provider is not supported for this Payment Type"}]'),
                 true,
-                new FakeResponse(500, [], '[{"Code": 133,"Message": "Provider is not supported for this Payment Type"}]')
             ],
             'invalid data with check disabled' => [
+                new FakeResponse(500, [], '[{"Code": 133,"Message": "Provider is not supported for this Payment Type"}]'),
                 false,
-                new FakeResponse(500, [], '[{"Code": 133,"Message": "Provider is not supported for this Payment Type"}]')
             ]
         ];
     }

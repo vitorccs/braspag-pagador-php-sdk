@@ -9,29 +9,18 @@ use Braspag\Helpers\DateTimeHelper;
 
 class BoletoSaleBuilder extends SaleBuilder
 {
-    /**
-     * @param string $provider
-     * @param int|null $amount
-     * @return static
-     */
-    public static function create(string $provider, ?int $amount): self
+    public static function create(string $provider,
+                                  ?int   $amount): self
     {
         return new self($provider, $amount);
     }
 
-    /**
-     * @param string $provider
-     * @param int|null $amount
-     */
-    public function __construct(string $provider, ?int $amount)
+    public function __construct(string $provider,
+                                ?int   $amount)
     {
         $this->payment = new BoletoPayment($provider, $amount);
     }
 
-    /**
-     * @param string $number
-     * @return $this
-     */
     public function setBoletoNumber(string $number): self
     {
         $this->payment->BoletoNumber = $number;
@@ -39,10 +28,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param string $assignor
-     * @return $this
-     */
     public function setAssignor(string $assignor): self
     {
         $this->payment->Assignor = $assignor;
@@ -50,10 +35,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param string $demonstrative
-     * @return BoletoSaleBuilder
-     */
     public function setDemonstrative(string $demonstrative): self
     {
         $this->payment->Demonstrative = $demonstrative;
@@ -61,11 +42,7 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param \DateTime|string $date
-     * @return BoletoSaleBuilder
-     */
-    public function setExpirationDate($date): self
+    public function setExpirationDate(\DateTime|string $date): self
     {
         if ($date instanceof \DateTime) {
             $date = DateTimeHelper::toDateString($date);
@@ -77,8 +54,6 @@ class BoletoSaleBuilder extends SaleBuilder
     }
 
     /**
-     * @param string $identification
-     * @return BoletoSaleBuilder
      * @throws BraspagBuilderException
      */
     public function setIdentification(string $identification): self
@@ -90,10 +65,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param string $instructions
-     * @return BoletoSaleBuilder
-     */
     public function setInstructions(string $instructions): self
     {
         $this->payment->Instructions = $instructions;
@@ -101,10 +72,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $days
-     * @return BoletoSaleBuilder
-     */
     public function setNullifyDays(int $days): self
     {
         $this->payment->NullifyDays = $days;
@@ -112,10 +79,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $days
-     * @return BoletoSaleBuilder
-     */
     public function setDaysToFine(int $days): self
     {
         $this->payment->DaysToFine = $days;
@@ -123,10 +86,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param float $rate
-     * @return BoletoSaleBuilder
-     */
     public function setFineRate(float $rate): self
     {
         $this->payment->FineRate = $rate;
@@ -134,10 +93,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $amount
-     * @return BoletoSaleBuilder
-     */
     public function setFineAmount(int $amount): self
     {
         $this->payment->FineAmount = $amount;
@@ -145,10 +100,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $days
-     * @return BoletoSaleBuilder
-     */
     public function setDaysToInterest(int $days): self
     {
         $this->payment->DaysToInterest = $days;
@@ -156,10 +107,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param float $rate
-     * @return BoletoSaleBuilder
-     */
     public function setInterestRate(float $rate): self
     {
         $this->payment->InterestRate = $rate;
@@ -167,10 +114,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $amount
-     * @return BoletoSaleBuilder
-     */
     public function setInterestAmount(int $amount): self
     {
         $this->payment->InterestAmount = $amount;
@@ -178,10 +121,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $amount
-     * @return BoletoSaleBuilder
-     */
     public function setDiscountAmount(int $amount): self
     {
         $this->payment->DiscountAmount = $amount;
@@ -189,11 +128,7 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param \DateTime|string $date
-     * @return BoletoSaleBuilder
-     */
-    public function setDiscountLimitDate($date): self
+    public function setDiscountLimitDate(\DateTime|string $date): self
     {
         if ($date instanceof \DateTime) {
             $date = DateTimeHelper::toDateString($date);
@@ -204,10 +139,6 @@ class BoletoSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param float $rate
-     * @return BoletoSaleBuilder
-     */
     public function setDiscountRate(float $rate): self
     {
         $this->payment->DiscountRate = $rate;
@@ -216,8 +147,6 @@ class BoletoSaleBuilder extends SaleBuilder
     }
 
     /**
-     * @param string|null $identification
-     * @return string|null
      * @throws BraspagBuilderException
      */
     protected function validateCnpj(?string $identification): ?string

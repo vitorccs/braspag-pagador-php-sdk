@@ -23,43 +23,31 @@ class AbstractParameters
 
     /**
      * The Merchant ID
-     *
-     * @var string|null
      */
     protected ?string $merchantId;
 
     /**
      * The HTTP timeout
-     *
-     * @var int|null
      */
     protected ?int $timeout;
 
     /**
      * The toggle for Sandbox mode
-     *
-     * @var bool|null
      */
-    protected ?bool $sandbox;
+    protected bool $sandbox;
 
     /**
      * The default API timeout
-     *
-     * @var int
      */
     protected static int $defaultTimeout = 30;
 
     /**
      * The default API mode
-     *
-     * @var bool
      */
     protected static bool $defaultSandbox = false;
 
     /**
      * The Client Secret
-     *
-     * @var string|null
      */
     private ?string $clientSecret;
 
@@ -75,41 +63,26 @@ class AbstractParameters
         $this->timeout = $this->setTimeout($timeout);
     }
 
-    /**
-     * @return string
-     */
     public function getMerchantId(): string
     {
         return $this->merchantId;
     }
 
-    /**
-     * @return int
-     */
     public function getTimeout(): int
     {
         return $this->timeout;
     }
 
-    /**
-     * @return bool
-     */
-    public function getSandbox(): ?bool
+    public function getSandbox(): bool
     {
         return $this->sandbox;
     }
 
-    /**
-     * @return int
-     */
     public static function getDefaultTimeout(): int
     {
         return self::$defaultTimeout;
     }
 
-    /**
-     * @return bool
-     */
     public static function getDefaultSandbox(): bool
     {
         return self::$defaultSandbox;
@@ -130,7 +103,6 @@ class AbstractParameters
     }
 
     /**
-     * @param int|null $timeout
      * @throws BraspagParameterException
      */
     private static function setTimeout(int $timeout = null): int
@@ -153,7 +125,6 @@ class AbstractParameters
     }
 
     /**
-     * @param bool|null $sandbox
      * @throws BraspagParameterException
      */
     private static function setSandbox(bool $sandbox = null): bool

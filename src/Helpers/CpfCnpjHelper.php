@@ -15,20 +15,12 @@ class CpfCnpjHelper
      */
     const CNPJ_CHARS_LENGTH = 14;
 
-    /**
-     * @param string|int|null $value
-     * @return string|null
-     */
-    public static function unmask($value = null): string
+    public static function unmask(int|string|null $value): string
     {
         return Sanitizer::numeric($value);
     }
 
-    /**
-     * @param string|int|null $cnpj
-     * @return bool
-     */
-    public static function validateCnpj($cnpj): bool
+    public static function validateCnpj(int|string|null $cnpj): bool
     {
         $cnpj = self::unmask($cnpj);
 
@@ -59,11 +51,7 @@ class CpfCnpjHelper
         return $cnpj[13] == ($remainder < 2 ? 0 : 11 - $remainder);
     }
 
-    /**
-     * @param string|int|null $cpf
-     * @return bool
-     */
-    public static function validateCpf($cpf): bool
+    public static function validateCpf(int|string|null $cpf): bool
     {
         $cpf = self::unmask($cpf);
 
@@ -97,27 +85,21 @@ class CpfCnpjHelper
         }
     }
 
-    /**
-     * @param string|int|null $value
-     * @return bool
-     */
-    public static function validateAny($value): bool
+    public static function validateAny(int|string|null $value): bool
     {
         return self::validateCpf($value) || self::validateCnpj($value);
     }
 
-    /**
-     * @param string|int|null $value
-     * @return null
-     */
-    public static function getType($value): ?string
+    public static function getType(int|string|null $value): ?string
     {
         if (self::validateCpf($value)) {
             return 'CPF';
         }
+
         if (self::validateCnpj($value)) {
             return 'CNPJ';
         }
+
         return null;
     }
 }

@@ -2,7 +2,7 @@
 SDK em PHP para API Braspag Pagador e API Cartão Protegido
 
 ## Requisitos
-* PHP >= 7.4
+* PHP >= 8.0
 
 ## Descrição
 SDK em PHP para a [API Braspag Pagador](https://braspag.github.io/manual/braspag-pagador).
@@ -325,7 +325,7 @@ try {
         ],
         'Payment' => [
             'Type' => 'Pix',
-            'Provider' => 'Simulado',
+            'Provider' => 'Cielo30',
             'Amount' => 20
         ]
     ];
@@ -337,16 +337,16 @@ try {
     print_r($response);
 
 } catch (BraspagProviderException $e) { // erros de Provider
-    echo sprintf('Provider: %s (Payment Status: %s)', $e->getMessage(), $e->getCode());
+    echo sprintf('Provider: %s (Payment Status: %s)', $e->getMessage(), $e->getErrorCode());
     // NOTA: em erros de Provider, a Braspag irá criar a Transação normalmente
     // Caso queira capturar o corpo da reposta, utilize o método abaixo:
     $response = $e->getResponseData();
     
 } catch (BraspagValidationException $e) { // erros de Validação da API
-    echo sprintf('Validation: %s (Code: %s)', $e->getMessage(), $e->getCode());
+    echo sprintf('Validation: %s (Code: %s)', $e->getMessage(), $e->getErrorCode());
 
 } catch (BraspagRequestException $e) { // demais erros não tratados (HTTP 4xx e 5xx)
-    echo sprintf('Request: %s (HTTP Status: %s)', $e->getMessage(), $e->getCode());
+    echo sprintf('Request: %s (HTTP Status: %s)', $e->getMessage(), $e->getErrorCode());
 
 } catch (\Exception $e) { // demais erros
     echo $e->getMessage();

@@ -21,7 +21,7 @@ class DebitCardTest extends TestCase
         $this->fillObject($debitCard, $properties);
 
         foreach ($properties as $property => $value) {
-            $this->assertObjectHasAttribute($property, $debitCard);
+            $this->assertObjectHasProperty($property, $debitCard);
             $this->assertEquals($debitCard->{$property}, $value);
         }
     }

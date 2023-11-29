@@ -9,10 +9,6 @@ class DateTimeHelper
      */
     const DATE_FORMAT = 'Y-m-d';
 
-    /**
-     * @param \DateTime $dateTime
-     * @return string
-     */
     public static function toDateString(\DateTime $dateTime): string
     {
         return $dateTime->format(self::DATE_FORMAT);

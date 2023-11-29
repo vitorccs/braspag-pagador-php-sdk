@@ -21,7 +21,7 @@ class BoletoPaymentTest extends TestCase
         $this->fillObject($pixPayment, $properties);
 
         foreach ($properties as $property => $value) {
-            $this->assertObjectHasAttribute($property, $pixPayment);
+            $this->assertObjectHasProperty($property, $pixPayment);
             $this->assertEquals($pixPayment->{$property}, $value);
         }
     }

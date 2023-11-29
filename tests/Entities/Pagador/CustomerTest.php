@@ -21,7 +21,7 @@ class CustomerTest extends TestCase
         $this->fillObject($customer, $properties);
 
         foreach ($properties as $property => $value) {
-            $this->assertObjectHasAttribute($property, $customer);
+            $this->assertObjectHasProperty($property, $customer);
             $this->assertEquals($customer->{$property}, $value);
         }
     }

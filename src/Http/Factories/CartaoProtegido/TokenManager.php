@@ -13,54 +13,28 @@ class TokenManager
 {
     use ClientFactoryTrait;
 
-    /**
-     * @var string|null
-     */
     protected static ?string $token = null;
 
-    /**
-     * @var int
-     */
     protected static int $lastTimestamp = 0;
 
-    /**
-     * @var int
-     */
     protected static int $expiresIn = 0;
 
-    /**
-     * @var int
-     */
     protected static int $timestampOffset = 60;
 
     /**
      * The API Base URL for authentication
-     *
-     * @var string[]
      */
     protected static array $authBaseUrls = [
         'sandbox' => 'https://authsandbox.braspag.com.br/oauth2/token',
         'production' => 'https://auth.braspag.com.br/oauth2/token'
     ];
 
-    /**
-     * @var string
-     */
     protected static string $defaultErrorMessage = 'OAuth2 Authentication failed';
 
-    /**
-     * @var Parameters
-     */
     private Parameters $parameters;
 
-    /**
-     * @var Client
-     */
     private Client $client;
 
-    /**
-     * @param Parameters $parameters
-     */
     public function __construct(Parameters $parameters)
     {
         $this->parameters = $parameters;
@@ -80,7 +54,6 @@ class TokenManager
     }
 
     /**
-     * @return string
      * @throws BraspagRequestException
      */
     public function getToken(): string
@@ -91,9 +64,6 @@ class TokenManager
         return self::$token;
     }
 
-    /**
-     * @return bool
-     */
     public function isExpired(): bool
     {
         if (empty(self::$token)) return true;
@@ -105,10 +75,6 @@ class TokenManager
         return $expireTimestamp <= self::nowTimestamp();
     }
 
-    /**
-     * @param MockHandler $handler
-     * @return TokenManager
-     */
     public function setFakeClient(MockHandler $handler): self
     {
         $this->client = FakeClientFactory::create($handler);
@@ -116,7 +82,6 @@ class TokenManager
     }
 
     /**
-     * @return void
      * @throws BraspagRequestException
      */
     protected function retrieve(): void
@@ -136,8 +101,6 @@ class TokenManager
     }
 
     /**
-     * @param string $contents
-     * @return void
      * @throws BraspagRequestException
      */
     private function updateToken(string $contents): void
@@ -159,17 +122,11 @@ class TokenManager
         throw new BraspagRequestException($errorDescription);
     }
 
-    /**
-     * @return int
-     */
     private static function nowTimestamp(): int
     {
         return (new \DateTime())->getTimestamp();
     }
 
-    /**
-     * @return string
-     */
     private function getApiUrl(): string
     {
         $environment = $this->parameters->getSandbox() ? 'sandbox' : 'production';

@@ -4,10 +4,6 @@ namespace Braspag\Helpers;
 
 class CardHelper
 {
-    /**
-     * @param string $cardNumber
-     * @return bool
-     */
     public static function validateCardNumber(string $cardNumber): bool
     {
         // remove any non-numeric chars
@@ -39,10 +35,6 @@ class CardHelper
         return $total % 10 == 0;
     }
 
-    /**
-     * @param string $expDate
-     * @return bool
-     */
     public static function validateExpirationDate(string $expDate): bool
     {
         preg_match('/^(\d{2})\/(\d{4})$/', $expDate, $matches);
@@ -60,20 +52,12 @@ class CardHelper
         return $validMonth && $validYear;
     }
 
-    /**
-     * @param string $brand
-     * @param array $brands
-     * @return bool
-     */
-    public static function validateBrand(string $brand, array $brands): bool
+    public static function validateBrand(string $brand,
+                                         array  $brands): bool
     {
         return in_array($brand, $brands);
     }
 
-    /**
-     * @param string|null $code
-     * @return bool
-     */
     public static function validateSecurityCode(?string $code): bool
     {
         return !empty($code) && preg_match('/^\d{3,4}$/', $code);

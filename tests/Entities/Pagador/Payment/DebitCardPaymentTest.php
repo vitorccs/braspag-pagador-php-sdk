@@ -25,7 +25,7 @@ class DebitCardPaymentTest extends TestCase
         $debitCardPayment->DebitCard = $debitCard;
 
         foreach ($properties as $property => $value) {
-            $this->assertObjectHasAttribute($property, $debitCardPayment);
+            $this->assertObjectHasProperty($property, $debitCardPayment);
             $instanceValue = $debitCardPayment->{$property};
             $instanceValue = is_array($value) ? (array)$instanceValue : $instanceValue;
             $this->assertEquals($instanceValue, $value);

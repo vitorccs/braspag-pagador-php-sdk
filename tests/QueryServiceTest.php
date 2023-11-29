@@ -28,8 +28,8 @@ class QueryServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('Payment', $response);
-        $this->assertObjectHasAttribute('Status', $response->Payment);
+        $this->assertObjectHasProperty('Payment', $response);
+        $this->assertObjectHasProperty('Status', $response->Payment);
         $this->assertEquals($fakeJson->Payment->Status, $response->Payment->Status);
     }
 
@@ -46,9 +46,9 @@ class QueryServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('ReasonCode', $response);
-        $this->assertObjectHasAttribute('ReasonMessage', $response);
-        $this->assertObjectHasAttribute('Payments', $response);
+        $this->assertObjectHasProperty('ReasonCode', $response);
+        $this->assertObjectHasProperty('ReasonMessage', $response);
+        $this->assertObjectHasProperty('Payments', $response);
 
         $this->assertEquals($fakeJson->ReasonCode, $response->ReasonCode);
         $this->assertEquals($fakeJson->ReasonMessage, $response->ReasonMessage);
@@ -68,9 +68,9 @@ class QueryServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('RecurrentPayment', $response);
-        $this->assertObjectHasAttribute('SuccessfulRecurrences', $response->RecurrentPayment);
-        $this->assertObjectHasAttribute('Status', $response->RecurrentPayment);
+        $this->assertObjectHasProperty('RecurrentPayment', $response);
+        $this->assertObjectHasProperty('SuccessfulRecurrences', $response->RecurrentPayment);
+        $this->assertObjectHasProperty('Status', $response->RecurrentPayment);
 
         $this->assertEquals($fakeJson->RecurrentPayment->SuccessfulRecurrences, $response->RecurrentPayment->SuccessfulRecurrences);
         $this->assertEquals($fakeJson->RecurrentPayment->Status, $response->RecurrentPayment->Status);
