@@ -6,15 +6,15 @@ use Braspag\Converters\CardConverter;
 use Braspag\Entities\CartaoProtegido\Card as CartaoProtegidoCard;
 use Braspag\Entities\CartaoProtegido\Parameters;
 use Braspag\Entities\Pagador\Cards\Card as PagadorCard;
+use Braspag\Exceptions\BraspagException;
 use Braspag\Exceptions\BraspagProviderException;
+use Braspag\Exceptions\BraspagRequestException;
+use Braspag\Exceptions\BraspagValidationException;
 use Braspag\Http\Factories\CartaoProtegido\ClientFactory;
 use Braspag\Http\Resource;
 
 class CardService extends Resource
 {
-    /**
-     * @param Parameters|null $parameters
-     */
     public function __construct(?Parameters $parameters = null)
     {
         $client = ClientFactory::create($parameters);
@@ -23,14 +23,12 @@ class CardService extends Resource
     }
 
     /**
-     * @param PagadorCard|CartaoProtegidoCard|object|array $data
-     * @return object|null
      * @throws BraspagProviderException
-     * @throws Exceptions\BraspagException
-     * @throws Exceptions\BraspagRequestException
-     * @throws Exceptions\BraspagValidationException
+     * @throws BraspagException
+     * @throws BraspagRequestException
+     * @throws BraspagValidationException
      */
-    public function createToken($data): ?object
+    public function createToken(PagadorCard|CartaoProtegidoCard|array $data): ?object
     {
         if ($data instanceof PagadorCard) {
             $data = CardConverter::toCartaoProtegidoCard($data);
@@ -47,8 +45,6 @@ class CardService extends Resource
     }
 
     /**
-     * @param string $token
-     * @return object|null
      * @throws BraspagProviderException
      * @throws Exceptions\BraspagException
      * @throws Exceptions\BraspagRequestException
@@ -60,8 +56,6 @@ class CardService extends Resource
     }
 
     /**
-     * @param string $alias
-     * @return object|null
      * @throws BraspagProviderException
      * @throws Exceptions\BraspagException
      * @throws Exceptions\BraspagRequestException
@@ -73,8 +67,6 @@ class CardService extends Resource
     }
 
     /**
-     * @param string $token
-     * @return object|null
      * @throws BraspagProviderException
      * @throws Exceptions\BraspagException
      * @throws Exceptions\BraspagRequestException
@@ -86,8 +78,6 @@ class CardService extends Resource
     }
 
     /**
-     * @param string $token
-     * @return object|null
      * @throws BraspagProviderException
      * @throws Exceptions\BraspagException
      * @throws Exceptions\BraspagRequestException
@@ -99,8 +89,6 @@ class CardService extends Resource
     }
 
     /**
-     * @param string $token
-     * @return object|null
      * @throws BraspagProviderException
      * @throws Exceptions\BraspagException
      * @throws Exceptions\BraspagRequestException

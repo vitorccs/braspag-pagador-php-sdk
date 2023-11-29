@@ -28,7 +28,7 @@ class CardServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('TokenReference', $fakeJson);
+        $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
     /**
@@ -44,7 +44,7 @@ class CardServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('Account', $fakeJson);
+        $this->assertObjectHasProperty('Account', $fakeJson);
     }
 
     /**
@@ -60,7 +60,7 @@ class CardServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('TokenReference', $fakeJson);
+        $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
     /**
@@ -76,7 +76,7 @@ class CardServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('TokenReference', $fakeJson);
+        $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
     /**
@@ -92,7 +92,7 @@ class CardServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('TokenReference', $fakeJson);
+        $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
     /**
@@ -108,7 +108,7 @@ class CardServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('TokenReference', $fakeJson);
+        $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
     /**

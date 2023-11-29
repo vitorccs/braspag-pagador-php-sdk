@@ -4,15 +4,15 @@ namespace Braspag;
 
 use Braspag\Entities\Pagador\Parameters;
 use Braspag\Entities\Pagador\Sale;
+use Braspag\Exceptions\BraspagException;
 use Braspag\Exceptions\BraspagProviderException;
+use Braspag\Exceptions\BraspagRequestException;
+use Braspag\Exceptions\BraspagValidationException;
 use Braspag\Http\Factories\Pagador\ClientFactory;
 use Braspag\Http\Resource;
 
 class SaleService extends Resource
 {
-    /**
-     * @param Parameters|null $parameters
-     */
     public function __construct(?Parameters $parameters = null)
     {
         $client = ClientFactory::create(false, $parameters);
@@ -21,15 +21,13 @@ class SaleService extends Resource
     }
 
     /**
-     * @param Sale|array $data
-     * @param bool $checkSuccess
-     * @return object|null
      * @throws BraspagProviderException
-     * @throws Exceptions\BraspagException
-     * @throws Exceptions\BraspagRequestException
-     * @throws Exceptions\BraspagValidationException
+     * @throws BraspagException
+     * @throws BraspagRequestException
+     * @throws BraspagValidationException
      */
-    public function create($data, bool $checkSuccess = false): ?object
+    public function create(array|Sale $data,
+                           bool       $checkSuccess = false): ?object
     {
         $response = $this->api->post('/v2/sales', $data);
 
@@ -41,15 +39,13 @@ class SaleService extends Resource
     }
 
     /**
-     * @param string $paymentId
-     * @param int|null $amount
-     * @return object|null
      * @throws BraspagProviderException
-     * @throws Exceptions\BraspagException
-     * @throws Exceptions\BraspagRequestException
-     * @throws Exceptions\BraspagValidationException
+     * @throws BraspagException
+     * @throws BraspagRequestException
+     * @throws BraspagValidationException
      */
-    public function refund(string $paymentId, int $amount = null): ?object
+    public function refund(string $paymentId,
+                           ?int   $amount = null): ?object
     {
         return $this->api->put("/v2/sales/{$paymentId}/void", [
             'amount' => $amount
@@ -61,10 +57,9 @@ class SaleService extends Resource
      *
      * FORMAT: { "Payment": { "Status": int }
      *
-     * @param object|array|null $jsonResponse
      * @throws BraspagProviderException
      */
-    private function checkForProviderException($jsonResponse = null)
+    private function checkForProviderException(object|array|null $jsonResponse): void
     {
         $providerData = $jsonResponse->Payment ?? null;
         $providerStatusCode = $providerData->Status ?? null;

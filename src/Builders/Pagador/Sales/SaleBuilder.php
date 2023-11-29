@@ -10,55 +10,30 @@ use Braspag\Exceptions\BraspagBuilderException;
 
 class SaleBuilder
 {
-    /**
-     * @var Payment
-     */
     protected Payment $payment;
 
-    /**
-     * @var Customer|null
-     */
     private ?Customer $customer = null;
 
-    /**
-     * @var string|null
-     */
     private ?string $merchantOrderId = null;
 
-    /**
-     * @param Customer $customer
-     * @return $this
-     */
     public function withCustomer(Customer $customer): self
     {
         $this->customer = $customer;
         return $this;
     }
 
-    /**
-     * @param Address|null $address
-     * @return $this
-     */
     public function withCustomerAddress(?Address $address): self
     {
         $this->customer->Address = $address;
         return $this;
     }
 
-    /**
-     * @param Address|null $address
-     * @return $this
-     */
     public function withCustomerDeliveryAddress(?Address $address): self
     {
         $this->customer->DeliveryAddress = $address;
         return $this;
     }
 
-    /**
-     * @param string $merchantOrderId
-     * @return $this
-     */
     public function withMerchantOrderId(string $merchantOrderId): self
     {
         $this->merchantOrderId = $merchantOrderId;
@@ -66,7 +41,6 @@ class SaleBuilder
     }
 
     /**
-     * @return Sale
      * @throws BraspagBuilderException
      */
     public function get(): Sale

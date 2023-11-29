@@ -21,7 +21,7 @@ class AddressTest extends TestCase
         $this->fillObject($address, $properties);
 
         foreach ($properties as $property => $value) {
-            $this->assertObjectHasAttribute($property, $address);
+            $this->assertObjectHasProperty($property, $address);
             $this->assertEquals($address->{$property}, $value);
         }
     }

@@ -14,8 +14,6 @@ class Parameters extends AbstractParameters
 
     /**
      * The Merchant Key
-     *
-     * @var string|null
      */
     private ?string $merchantKey;
 
@@ -32,9 +30,6 @@ class Parameters extends AbstractParameters
         $this->merchantKey = $this->setMerchantKey($merchantKey);
     }
 
-    /**
-     * @return string
-     */
     public function getMerchantKey(): string
     {
         return $this->merchantKey;

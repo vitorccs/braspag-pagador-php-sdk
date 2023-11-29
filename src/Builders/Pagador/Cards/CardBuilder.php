@@ -11,9 +11,6 @@ abstract class CardBuilder
 {
     use CardBuilderTrait;
 
-    /**
-     * @var Card
-     */
     protected Card $card;
 
     /**
@@ -29,8 +26,6 @@ abstract class CardBuilder
     }
 
     /**
-     * @param string $brand
-     * @return $this
      * @throws BraspagBuilderException
      */
     public function setBrand(string $brand): self
@@ -42,10 +37,6 @@ abstract class CardBuilder
         return $this;
     }
 
-    /**
-     * @param bool $save
-     * @return $this
-     */
     public function setSaveCard(bool $save): self
     {
         $this->card->SaveCard = $save;
@@ -53,10 +44,6 @@ abstract class CardBuilder
         return $this;
     }
 
-    /**
-     * @param array $cardOnFile
-     * @return $this
-     */
     public function setCardOnFile(array $cardOnFile): self
     {
         $this->card->CardOnFile = $cardOnFile;
@@ -64,10 +51,6 @@ abstract class CardBuilder
         return $this;
     }
 
-    /**
-     * @param string $token
-     * @return $this
-     */
     public function setCardToken(string $token): self
     {
         $this->card->CardToken = $token;
@@ -75,17 +58,12 @@ abstract class CardBuilder
         return $this;
     }
 
-    /**
-     * @return Card
-     */
     public function get(): Card
     {
         return $this->card;
     }
 
     /**
-     * @param string $brand
-     * @return string
      * @throws BraspagBuilderException
      */
     private function validateBrand(string $brand): string

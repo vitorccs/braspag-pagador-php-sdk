@@ -19,15 +19,11 @@ class Parameters extends AbstractParameters
 
     /**
      * The Client ID
-     *
-     * @var string|null
      */
     private ?string $clientId;
 
     /**
      * The Client Secret
-     *
-     * @var string|null
      */
     private ?string $clientSecret;
 
@@ -46,17 +42,11 @@ class Parameters extends AbstractParameters
         $this->clientSecret = $this->setClientSecret($clientSecret);
     }
 
-    /**
-     * @return string
-     */
     public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    /**
-     * @return string
-     */
     public function getClientSecret(): string
     {
         return $this->clientSecret;

@@ -10,14 +10,9 @@ use Braspag\Helpers\EmailHelper;
 
 class CustomerBuilder
 {
-    /**
-     * @var Customer
-     */
     private Customer $customer;
 
     /**
-     * @param string $name
-     * @return CustomerBuilder
      * @throws BraspagBuilderException
      */
     public static function create(string $name): self
@@ -26,7 +21,6 @@ class CustomerBuilder
     }
 
     /**
-     * @param string $name
      * @throws BraspagBuilderException
      */
     public function __construct(string $name)
@@ -36,8 +30,6 @@ class CustomerBuilder
     }
 
     /**
-     * @param string $name
-     * @return CustomerBuilder
      * @throws BraspagBuilderException
      */
     public function setName(string $name): self
@@ -50,8 +42,6 @@ class CustomerBuilder
     }
 
     /**
-     * @param string|null $identity
-     * @return CustomerBuilder
      * @throws BraspagBuilderException
      */
     public function setIdentity(?string $identity): self
@@ -65,8 +55,6 @@ class CustomerBuilder
     }
 
     /**
-     * @param string|null $email
-     * @return CustomerBuilder
      * @throws BraspagBuilderException
      */
     public function setEmail(?string $email): self
@@ -78,10 +66,6 @@ class CustomerBuilder
         return $this;
     }
 
-    /**
-     * @param string|null $birthdate
-     * @return CustomerBuilder
-     */
     public function setBirthdate(?string $birthdate): self
     {
         $this->customer->Birthdate = $birthdate;
@@ -89,10 +73,6 @@ class CustomerBuilder
         return $this;
     }
 
-    /**
-     * @param string|null $ipAddress
-     * @return CustomerBuilder
-     */
     public function setIpAddress(?string $ipAddress): self
     {
         $this->customer->IpAddress = $ipAddress;
@@ -100,10 +80,6 @@ class CustomerBuilder
         return $this;
     }
 
-    /**
-     * @param Address|null $address
-     * @return CustomerBuilder
-     */
     public function setAddress(?Address $address): self
     {
         $this->customer->Address = $address;
@@ -111,10 +87,6 @@ class CustomerBuilder
         return $this;
     }
 
-    /**
-     * @param Address|null $address
-     * @return CustomerBuilder
-     */
     public function setDeliveryAddress(?Address $address): self
     {
         $this->customer->DeliveryAddress = $address;
@@ -122,18 +94,12 @@ class CustomerBuilder
         return $this;
     }
 
-    /**
-     * @return Customer
-     */
     public function get(): Customer
     {
         return $this->customer;
     }
 
     /**
-     * @param string $value
-     * @param string $field
-     * @return string
      * @throws BraspagBuilderException
      */
     protected function validateNotEmpty(string $value, string $field): string
@@ -148,8 +114,6 @@ class CustomerBuilder
     }
 
     /**
-     * @param string|null $identity
-     * @return string|null
      * @throws BraspagBuilderException
      */
     protected function validateCpfCnpj(?string $identity): ?string
@@ -164,8 +128,6 @@ class CustomerBuilder
     }
 
     /**
-     * @param string|null $email
-     * @return string|null
      * @throws BraspagBuilderException
      */
     protected function validateEmail(?string $email): ?string

@@ -7,29 +7,18 @@ use Braspag\Entities\Pagador\Payment\CreditCardPayment;
 
 class CreditCardSaleBuilder extends SaleBuilder
 {
-    /**
-     * @param string $provider
-     * @param int|null $amount
-     * @return static
-     */
-    public static function create(string $provider, ?int $amount): self
+    public static function create(string $provider,
+                                  ?int   $amount): self
     {
         return new self($provider, $amount);
     }
 
-    /**
-     * @param string $provider
-     * @param int|null $amount
-     */
-    public function __construct(string $provider, ?int $amount)
+    public function __construct(string $provider,
+                                ?int   $amount)
     {
         $this->payment = new CreditCardPayment($provider, $amount);
     }
 
-    /**
-     * @param Card $creditCard
-     * @return $this
-     */
     public function withCreditCard(Card $creditCard): self
     {
         $this->payment->CreditCard = $creditCard;
@@ -37,10 +26,6 @@ class CreditCardSaleBuilder extends SaleBuilder
         return $this;
     }
 
-    /**
-     * @param int $installments
-     * @return $this
-     */
     public function setInstallments(int $installments): self
     {
         $this->payment->Installments = $installments;

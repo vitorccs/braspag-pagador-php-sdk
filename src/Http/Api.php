@@ -15,95 +15,73 @@ use Psr\Http\Message\ResponseInterface;
 
 class Api
 {
-    /**
-     * @var Client
-     */
     protected Client $client;
 
-    /**
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;
     }
 
     /**
-     * @param string $endpoint
-     * @param array $query
-     * @return object|array|null
      * @throws BraspagProviderException
      * @throws BraspagValidationException
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    public function get(string $endpoint, array $query = [])
+    public function get(string       $endpoint,
+                        array|object $query = []): object|array|null
     {
         return $this->request('GET', $endpoint, ['query' => $query]);
     }
 
     /**
-     * @param string $endpoint
-     * @param array|object $data
-     * @return object|array|null
      * @throws BraspagProviderException
      * @throws BraspagValidationException
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    public function post(string $endpoint, $data = null)
+    public function post(string       $endpoint,
+                         array|object $data = null): object|array|null
     {
         return $this->request('POST', $endpoint, ['json' => $data]);
     }
 
     /**
-     * @param string $endpoint
-     * @param array|object $data
-     * @return object|array|null
      * @throws BraspagProviderException
      * @throws BraspagValidationException
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    public function put(string $endpoint, $data = null)
+    public function put(string       $endpoint,
+                        array|object $data = null): object|array|null
     {
         return $this->request('PUT', $endpoint, ['json' => $data]);
     }
 
     /**
-     * @param string $endpoint
-     * @param array|object $data
-     * @return object|array|null
-     * @throws BraspagProviderException
-     * @throws BraspagValidationException
-     * @throws BraspagRequestException
      * @throws BraspagException
+     * @throws BraspagRequestException
+     * @throws BraspagValidationException
      */
-    public function delete(string $endpoint, $data = null)
+    public function delete(string       $endpoint,
+                           array|object $data = null): object|array|null
     {
         return $this->request('DELETE', $endpoint, ['json' => $data]);
     }
 
-    /**
-     * @param MockHandler $handler
-     */
     public function setFakeClient(MockHandler $handler): void
     {
         $this->client = FakeClientFactory::create($handler);
     }
 
     /**
-     * @param string $method
-     * @param string|null $endpoint
-     * @param array $options
-     * @return object|array|null
      * @throws BraspagValidationException
      * @throws BraspagRequestException
      * @throws BraspagException
      */
-    private function request(string $method,
-                             string $endpoint = null,
-                             array  $options = [])
+    private function request(string  $method,
+                             ?string $endpoint = null,
+                             array   $options = []): object|array|null
     {
         try {
             $response = $this->client->request($method, $endpoint, $options);
@@ -121,12 +99,10 @@ class Api
     }
 
     /**
-     * @param ResponseInterface $response
-     * @return object|array|null
      * @throws BraspagRequestException
      * @throws BraspagValidationException
      */
-    private function response(ResponseInterface $response)
+    private function response(ResponseInterface $response): object|array|null
     {
         $content = $response->getBody()->getContents();
 
@@ -138,12 +114,11 @@ class Api
     }
 
     /**
-     * @param ResponseInterface $response
-     * @param object|array|null $jsonResponse
      * @throws BraspagRequestException
      * @throws BraspagValidationException
      */
-    private function checkForErrors(ResponseInterface $response, $jsonResponse = null)
+    private function checkForErrors(ResponseInterface $response,
+                                    object|array|null $jsonResponse): void
     {
         $code = $response->getStatusCode();
         $statusClass = (int)($code / 100);
@@ -163,11 +138,10 @@ class Api
      * API Cartao Protegido format:
      * { "Errors": [{ "Code": int, "Message": string }] }
      *
-     * @param object|array|null $jsonResponse
      * @throws BraspagValidationException
      *
      */
-    private function checkForValidationException($jsonResponse = null)
+    private function checkForValidationException(object|array|null $jsonResponse): void
     {
         $validationErrors = $jsonResponse->Errors ?? $jsonResponse;
 
@@ -175,9 +149,7 @@ class Api
 
         $validationError = $validationErrors[0];
         $validationMessage = $validationError->Message ?? null;
-        $validationCode = is_numeric($validationError->Code ?? null)
-            ? intval($validationError->Code)
-            : 0;
+        $validationCode = $validationError->Code ?? null;
 
         if (empty($validationMessage) && empty($validationCode)) return;
 
@@ -187,7 +159,6 @@ class Api
     /**
      * Generic Client or Server errors
      *
-     * @param ResponseInterface $response
      * @throws BraspagRequestException
      */
     private function checkForRequestException(ResponseInterface $response)

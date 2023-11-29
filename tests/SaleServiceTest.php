@@ -28,8 +28,8 @@ class SaleServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('Payment', $response);
-        $this->assertObjectHasAttribute('Status', $response->Payment);
+        $this->assertObjectHasProperty('Payment', $response);
+        $this->assertObjectHasProperty('Status', $response->Payment);
         $this->assertEquals($fakeJson->Payment->Status, $response->Payment->Status);
     }
 
@@ -46,8 +46,8 @@ class SaleServiceTest extends BaseTest
         $fakeJson = $fakeResponse->getJsonResponse();
 
         $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('Status', $response);
-        $this->assertObjectHasAttribute('ProviderReturnMessage', $response);
+        $this->assertObjectHasProperty('Status', $response);
+        $this->assertObjectHasProperty('ProviderReturnMessage', $response);
         $this->assertEquals($fakeJson->Status, $response->Status);
         $this->assertEquals($fakeJson->ProviderReturnMessage, $response->ProviderReturnMessage);
     }

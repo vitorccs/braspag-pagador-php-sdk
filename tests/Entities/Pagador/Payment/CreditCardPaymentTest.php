@@ -25,7 +25,7 @@ class CreditCardPaymentTest extends TestCase
         $creditCardPayment->CreditCard = $creditCard;
 
         foreach ($properties as $property => $value) {
-            $this->assertObjectHasAttribute($property, $creditCardPayment);
+            $this->assertObjectHasProperty($property, $creditCardPayment);
             $instanceValue = $creditCardPayment->{$property};
             $instanceValue = is_array($value) ? (array)$instanceValue : $instanceValue;
             $this->assertEquals($instanceValue, $value);

@@ -7,31 +7,18 @@ use Braspag\Helpers\ZipCodeHelper;
 
 class AddressBuilder
 {
-    /**
-     * @var Address
-     */
     private Address $address;
 
-    /**
-     * @return AddressBuilder
-     */
     public static function create(): self
     {
         return new self();
     }
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->address = new Address();
     }
 
-    /**
-     * @param string $street
-     * @return AddressBuilder
-     */
     public function setStreet(string $street): self
     {
         $this->address->Street = $street;
@@ -39,10 +26,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string|null $number
-     * @return AddressBuilder
-     */
     public function setNumber(?string $number): self
     {
         $this->address->Number = $number;
@@ -50,10 +33,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string|null $complement
-     * @return AddressBuilder
-     */
     public function setComplement(?string $complement): self
     {
         $this->address->Complement = $complement;
@@ -61,10 +40,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string $zipCode
-     * @return AddressBuilder
-     */
     public function setZipCode(string $zipCode): self
     {
         $this->address->ZipCode = ZipCodeHelper::unmask($zipCode);
@@ -72,10 +47,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string $city
-     * @return AddressBuilder
-     */
     public function setCity(string $city): self
     {
         $this->address->City = $city;
@@ -83,10 +54,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string $state
-     * @return AddressBuilder
-     */
     public function setState(string $state): self
     {
         $this->address->State = $state;
@@ -94,10 +61,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string $country
-     * @return AddressBuilder
-     */
     public function setCountry(string $country): self
     {
         $this->address->Country = $country;
@@ -105,10 +68,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @param string|null $District
-     * @return AddressBuilder
-     */
     public function setDistrict(?string $District): self
     {
         $this->address->District = $District;
@@ -116,9 +75,6 @@ class AddressBuilder
         return $this;
     }
 
-    /**
-     * @return Address
-     */
     public function get(): Address
     {
         return $this->address;

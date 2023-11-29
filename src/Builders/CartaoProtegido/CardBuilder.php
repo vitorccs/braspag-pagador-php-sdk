@@ -10,22 +10,13 @@ class CardBuilder
 {
     use CardBuilderTrait;
 
-    /**
-     * @var Card
-     */
     protected Card $card;
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->card = new Card();
     }
 
-    /**
-     * @return CardBuilder
-     */
     public static function create(): self
     {
         return new self();
@@ -43,9 +34,6 @@ class CardBuilder
         return $this;
     }
 
-    /**
-     * @return Card
-     */
     public function get(): Card
     {
         return $this->card;
