@@ -21,8 +21,8 @@ class SaleService extends Resource
     }
 
     /**
-     * @throws BraspagProviderException
      * @throws BraspagException
+     * @throws BraspagProviderException
      * @throws BraspagRequestException
      * @throws BraspagValidationException
      */
@@ -59,7 +59,7 @@ class SaleService extends Resource
      *
      * @throws BraspagProviderException
      */
-    private function checkForProviderException(object|array|null $jsonResponse): void
+    private function checkForProviderException(?object $jsonResponse): void
     {
         $providerData = $jsonResponse->Payment ?? null;
         $providerStatusCode = $providerData->Status ?? null;

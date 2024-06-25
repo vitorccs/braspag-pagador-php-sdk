@@ -8,29 +8,6 @@ use GuzzleHttp\Handler\MockHandler;
 
 class FakeTokenManagerFactory
 {
-    /**
-     * @var int
-     */
-    private int $expiresIn;
-
-    /**
-     * @var int
-     */
-    private int $quantity;
-
-    /**
-     * @var array
-     */
-    private array $properties;
-
-    /**
-     * @var Parameters
-     */
-    private Parameters $parameters;
-
-    /**
-     *
-     */
     const RESET_PROPERTIES = [
         'token' => 'null',
         'lastTimestamp' => 0,
@@ -38,9 +15,6 @@ class FakeTokenManagerFactory
         'timestampOffset' => 60
     ];
 
-    /**
-     * @return TokenManager
-     */
     public static function create(int   $expiresIn = 1,
                                   int   $quantity = 1,
                                   array $properties = []): TokenManager
@@ -60,11 +34,6 @@ class FakeTokenManagerFactory
         return $tokenManager;
     }
 
-    /**
-     * @param int $expiresIn
-     * @param int $quantity
-     * @return MockHandler
-     */
     private static function getHandler(int $expiresIn,
                                        int $quantity): MockHandler
     {
@@ -81,21 +50,18 @@ class FakeTokenManagerFactory
         return $handler;
     }
 
-    /**
-     * @param TokenManager $tokenManager
-     * @return void
-     */
     private static function resetProperties(TokenManager $tokenManager,
-                                            array        $properties = [])
+                                            array        $properties = []): void
     {
         $obj = new \ReflectionObject($tokenManager);
 
         $properties = array_merge(self::RESET_PROPERTIES, $properties);
 
         foreach ($properties as $key => $value) {
+            // make properties public
             $property = $obj->getProperty($key);
             $property->setAccessible(true);
-            $property->setValue($value);
+            $property->setValue($tokenManager, $value);
         }
     }
 }
