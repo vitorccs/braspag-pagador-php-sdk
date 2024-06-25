@@ -2,7 +2,7 @@
 
 namespace Braspag\Exceptions;
 
-class BraspagNotFoundException extends BraspagException
+class BraspagNotFoundException extends BraspagRequestException
 {
     const HTTP_NOT_FOUND = 404;
 

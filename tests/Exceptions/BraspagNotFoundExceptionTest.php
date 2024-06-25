@@ -66,6 +66,10 @@ class BraspagNotFoundExceptionTest extends TestCase
             ? $this->expectException(BraspagNotFoundException::class)
             : $this->expectException(BraspagRequestException::class);
 
+        $isNotFoundError
+            ? $this->expectExceptionMessage('Transaction not found')
+            : $this->expectExceptionMessageMatches('/^((?!Transaction not found).)*$/');
+
         $this->expectExceptionCode($fakeResponse->getStatusCode());
 
         /** @var QueryService $resource */
@@ -78,8 +82,9 @@ class BraspagNotFoundExceptionTest extends TestCase
     {
         return [
             '404' => [
-                new FakeResponse(BraspagNotFoundException::HTTP_NOT_FOUND, []),
+                new FakeResponse(BraspagNotFoundException::HTTP_NOT_FOUND),
                 true,
+                'Transaction not found'
             ]
         ];
     }
@@ -88,24 +93,24 @@ class BraspagNotFoundExceptionTest extends TestCase
     {
         return [
             '400 Bad Request' => [
-                new FakeResponse(400, []),
-                false,
+                new FakeResponse(400),
+                false
             ],
             '401 Unauthorized' => [
-                new FakeResponse(401, []),
-                false,
+                new FakeResponse(401),
+                false
             ],
             '403 Forbidden' => [
-                new FakeResponse(403, []),
-                false,
+                new FakeResponse(403),
+                false
             ],
             '422 Unprocessable Content' => [
-                new FakeResponse(422, []),
-                false,
+                new FakeResponse(422),
+                false
             ],
             '499' => [
-                new FakeResponse(499, []),
-                false,
+                new FakeResponse(499),
+                false
             ],
         ];
     }
@@ -114,24 +119,24 @@ class BraspagNotFoundExceptionTest extends TestCase
     {
         return [
             '500 Internal Server Error' => [
-                new FakeResponse(500, []),
-                false,
+                new FakeResponse(500),
+                false
             ],
             '502 Bad Gateway' => [
-                new FakeResponse(502, []),
-                false,
+                new FakeResponse(502),
+                false
             ],
             '503 Service Unavailable' => [
-                new FakeResponse(503, []),
-                false,
+                new FakeResponse(503),
+                false
             ],
             '504 Gateway Timeout' => [
-                new FakeResponse(504, []),
-                false,
+                new FakeResponse(504),
+                false
             ],
             '599' => [
-                new FakeResponse(599, []),
-                false,
+                new FakeResponse(599),
+                false
             ],
         ];
     }
