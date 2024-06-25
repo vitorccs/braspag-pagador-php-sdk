@@ -94,7 +94,7 @@ trait CardDataProvider
             '01/02',
             '/2',
             '1/',
-            "13/${currYear}",
+            "13/{$currYear}",
             FakerHelper::get()->date('m/Y', strtotime('now -1 month')),
             FakerHelper::get()->creditCardExpirationDateString(false, 'm/Y'),
         ];
@@ -118,11 +118,7 @@ trait CardDataProvider
         ];
     }
 
-    /**
-     * @param string|int $number
-     * @return string
-     */
-    public function breakCardNumber($number): string
+    public function breakCardNumber(int|string $number): string
     {
         $number = intval($number);
         $lastDigit = substr($number, -1);

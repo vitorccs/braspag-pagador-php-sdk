@@ -4,6 +4,7 @@ namespace Braspag;
 
 use Braspag\Entities\Pagador\Parameters;
 use Braspag\Exceptions\BraspagException;
+use Braspag\Exceptions\BraspagNotFoundException;
 use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Exceptions\BraspagValidationException;
 use Braspag\Http\Factories\Pagador\ClientFactory;
@@ -22,20 +23,22 @@ class QueryService extends Resource
      * @throws BraspagException
      * @throws BraspagRequestException
      * @throws BraspagValidationException
+     * @throws BraspagNotFoundException
      */
-    public function getByPaymentId(string $paymentId): ?object
+    public function getByPaymentId(string $paymentId): object
     {
-        return $this->api->get("/v2/sales/{$paymentId}");
+        return $this->makeQueryRequest("/v2/sales/{$paymentId}");
     }
 
     /**
      * @throws BraspagException
      * @throws BraspagRequestException
      * @throws BraspagValidationException
+     * @throws BraspagNotFoundException
      */
-    public function getByMerchantOrderId(string $merchantOrderId): ?object
+    public function getByMerchantOrderId(string $merchantOrderId): object
     {
-        return $this->api->get('/v2/sales', [
+        return $this->makeQueryRequest('/v2/sales', [
             'merchantOrderId' => $merchantOrderId
         ]);
     }
@@ -44,9 +47,30 @@ class QueryService extends Resource
      * @throws BraspagException
      * @throws BraspagRequestException
      * @throws BraspagValidationException
+     * @throws BraspagNotFoundException
      */
-    public function getByRecurrentPaymentId(string $recurrentPaymentId): ?object
+    public function getByRecurrentPaymentId(string $recurrentPaymentId): object
     {
-        return $this->api->get("/v2/RecurrentPayment/{$recurrentPaymentId}");
+        return $this->makeQueryRequest("/v2/RecurrentPayment/{$recurrentPaymentId}");
+    }
+
+    /**
+     * @throws BraspagException
+     * @throws BraspagRequestException
+     * @throws BraspagValidationException
+     * @throws BraspagNotFoundException
+     */
+    private function makeQueryRequest(string $endpoint,
+                                      array  $query = []): object
+    {
+        try {
+            return $this->api->get($endpoint, $query);
+        } catch (BraspagRequestException $e) {
+            $isNotFoundError = $e->getCode() === BraspagNotFoundException::HTTP_NOT_FOUND;
+
+            $isNotFoundError
+                ? throw new BraspagNotFoundException()
+                : throw $e;
+        }
     }
 }

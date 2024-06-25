@@ -3,18 +3,14 @@
 namespace Braspag\Test\Shared;
 
 use Braspag\Http\Resource;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 
 class FakeResponseHelper
 {
-    /**
-     * @param Resource $resource
-     * @param Response|RequestException $response
-     * @return Resource
-     */
-    public static function addMockHandler(Resource $resource, $response): Resource
+    public static function addMockHandler(Resource                 $resource,
+                                          GuzzleException|Response $response): Resource
     {
         $handler = new MockHandler([]);
         $handler->append($response);

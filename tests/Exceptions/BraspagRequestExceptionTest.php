@@ -57,6 +57,10 @@ class BraspagRequestExceptionTest extends BaseTest
                 new FakeResponse(400),
                 'Bad Request'
             ],
+            'http_404' => [
+                new FakeResponse(404),
+                'Not Found'
+            ],
             'http_403' => [
                 new FakeResponse(403),
                 'Forbidden'

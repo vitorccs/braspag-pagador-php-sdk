@@ -9,7 +9,7 @@ class FakeResponse extends Response
     /**
      * @var array|object|null
      */
-    private $jsonResponse;
+    private array|null|object $jsonResponse;
 
     /**
      * @param int $status
