@@ -252,11 +252,17 @@ $card = CardBuilder::create()
 ```
 
 ## Tratamento de erros
-Esta biblioteca lança as seguintes exceções:
+Esta biblioteca lança as exceções abaixo:
 
-* `BraspagProviderException` para requisições que embora tenham retornado como sucesso (HTTP 2xx), o corpo da resposta indica um erro retornado pelo Provider [Status = 0](https://braspag.github.io/manual/braspag-pagador#lista-de-status-da-transa%C3%A7%C3%A3o). Tratamento implementado apenas no endpoint de criar Transação.
+**Principais:**
 * `BraspagValidationException` para requisições que falharam (HTTP 4xx ou 5xx) e possuem mensagem de erro retornado pela API Braspag.
 * `BraspagRequestException` para requisições que falharam (HTTP 4xx ou 5xx) sem tratamento de erro ou problemas de conexão diversos (sem resposta HTTP).
+
+**No serviço de Criar Transação:**
+* `BraspagProviderException` para requisições que embora tenham retornado como sucesso (HTTP 2xx), o corpo da resposta indica um erro retornado pelo Provider [Status = 0](https://braspag.github.io/manual/braspag-pagador#lista-de-status-da-transa%C3%A7%C3%A3o).
+
+**No serviço de Consultar Transação:**
+* `BraspagNotFoundException` ao tentar localizar uma Transação que não existe (ex: localizar por PaymentId ou MerchantOrderId).
 
 Exemplo de corpo da resposta onde será lançado uma exceção `BraspagProviderException`
 ```
@@ -299,41 +305,29 @@ use Braspag\Enum\Providers;
 use Braspag\Exceptions\BraspagProviderException;
 use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Exceptions\BraspagValidationException;
+use Braspag\SaleService;
+use Braspag\QueryService;
 
 try {
-    // CRIANDO UMA TRANSAÇÃO
-    $saleService = new \Braspag\SaleService();
-    
-    // Opção 1 - Usando Builders
+    $saleService = new SaleService();
+    $queryService = new QueryService();
+
+    // CRIANDO TRANSAÇÃO
     $customer = CustomerBuilder::create('Nome Cliente')
         ->setIdentity('01.027.058/0001-91')
         ->get();
         
-    $pixSale = PixSaleBuilder::create(Providers::CIELO, 20)
+    $pixSale = PixSaleBuilder::create(Providers::BRADESCO2, 20)
         ->withCustomer($customer)
         ->withMerchantOrderId('000000006')
         ->get();
-    
-    // Opção 2 - Usando array puro
-    /*
-    $pixSale = [
-        'MerchantOrderId' => '000000006',
-        'Customer' => [
-            'Name' => 'Nome Cliente',
-            'Identity' => '01027058000191',
-            'IdentityType' => 'CNPJ'
-        ],
-        'Payment' => [
-            'Type' => 'Pix',
-            'Provider' => 'Cielo30',
-            'Amount' => 20
-        ]
-    ];
-    */
-    
+        
     $checkSuccess = true;  // Habilitar BraspagProviderException
     $response = $saleService->create($pixSale, $checkSuccess);
-
+    print_r($response);
+    
+    // CONSULTANDO UMA TRANSAÇÃO
+    $response = $queryService->getByPaymentId('47f59f6c-d649-4d10-a8a5-104eca634ff2');
     print_r($response);
 
 } catch (BraspagProviderException $e) { // erros de Provider
