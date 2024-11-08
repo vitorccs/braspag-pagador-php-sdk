@@ -166,7 +166,7 @@ $customer = CustomerBuilder::create('Nome Cliente')
 use Braspag\Builders\Pagador\Sales\PixSaleBuilder;
 
 $amount = 1000; // 10.00
-$pixSale = PixSaleBuilder::create(Providers::CIELO, $amount)
+$pixSale = PixSaleBuilder::create(Providers::CIELO30, $amount)
     ->withCustomer($customer)
     ->withMerchantOrderId('000000006')
     ->setQrCodeExpiration(8200)
@@ -179,7 +179,7 @@ $pixSale = PixSaleBuilder::create(Providers::CIELO, $amount)
 use Braspag\Builders\Pagador\Sales\BoletoSaleBuilder;
 
 $amount = 1000; // 10.00
-$boletoSale = BoletoSaleBuilder::create(Providers::CIELO, $amount)
+$boletoSale = BoletoSaleBuilder::create(Providers::BRADESCO2, $amount)
     ->withCustomer($customer)
     ->withMerchantOrderId('000000006')
     ->setAssignor('Nome do Cedente')
