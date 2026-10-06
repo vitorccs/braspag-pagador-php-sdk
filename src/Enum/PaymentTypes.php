@@ -6,9 +6,9 @@ class PaymentTypes
 {
     use Enum;
 
-    const PIX = 'Pix';
-    const CREDIT_CARD = 'CreditCard';
-    const DEBIT_CARD = 'DebitCard';
-    const ELECTRONIC_TRANSFER = 'ElectronicTransfer';
-    const BOLETO = 'Boleto';
+    const string PIX = 'Pix';
+    const string CREDIT_CARD = 'CreditCard';
+    const string DEBIT_CARD = 'DebitCard';
+    const string ELECTRONIC_TRANSFER = 'ElectronicTransfer';
+    const string BOLETO = 'Boleto';
 }

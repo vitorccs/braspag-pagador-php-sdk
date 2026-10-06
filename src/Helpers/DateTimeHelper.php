@@ -7,7 +7,7 @@ class DateTimeHelper
     /**
      * The date format for outputting DateTime objects as string
      */
-    const DATE_FORMAT = 'Y-m-d';
+    const string DATE_FORMAT = 'Y-m-d';
 
     public static function toDateString(\DateTime $dateTime): string
     {

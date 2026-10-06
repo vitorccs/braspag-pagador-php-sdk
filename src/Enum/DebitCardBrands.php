@@ -6,7 +6,7 @@ class DebitCardBrands
 {
     use Enum;
 
-    const VISA = 'Visa';
-    const MASTERCARD = 'Master';
-    const ELO = 'Elo';
+    const string VISA = 'Visa';
+    const string MASTERCARD = 'Master';
+    const string ELO = 'Elo';
 }
