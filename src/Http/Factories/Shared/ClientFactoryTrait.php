@@ -4,7 +4,7 @@ namespace Braspag\Http\Factories\Shared;
 
 trait ClientFactoryTrait
 {
-    private static string $sdkVersion = '1.4.0';
+    private static string $sdkVersion = '1.8.0';
 
     public static function getUserAgent(): string
     {
