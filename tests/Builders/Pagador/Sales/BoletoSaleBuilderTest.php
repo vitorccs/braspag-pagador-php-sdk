@@ -8,14 +8,13 @@ use Braspag\Entities\Pagador\Payment\BoletoPayment;
 use Braspag\Helpers\DateTimeHelper;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BoletoSaleBuilderTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validBoletoSale
-     */
+    #[DataProvider('validBoletoSale')]
     public function teste_create_boleto(array $properties)
     {
         $merchantOrderId = $properties['MerchantOrderId'];

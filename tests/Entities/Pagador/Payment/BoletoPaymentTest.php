@@ -6,14 +6,13 @@ namespace Braspag\Test\Entities\Pagador\Payment;
 use Braspag\Entities\Pagador\Payment\BoletoPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BoletoPaymentTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validBoletoPayment
-     */
+    #[DataProvider('validBoletoPayment')]
     public function test_properties(array $properties)
     {
         $pixPayment = new BoletoPayment($properties['Provider'], $properties['Amount']);

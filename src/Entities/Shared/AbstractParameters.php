@@ -54,9 +54,9 @@ class AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    public function __construct(string $merchantId = null,
-                                bool   $sandbox = null,
-                                int    $timeout = null)
+    public function __construct(?string $merchantId = null,
+                                ?bool   $sandbox = null,
+                                ?int    $timeout = null)
     {
         $this->merchantId = $this->setMerchantId($merchantId);
         $this->sandbox = $this->setSandbox($sandbox);
@@ -91,7 +91,7 @@ class AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    private function setMerchantId(string $merchantId = null): string
+    private function setMerchantId(?string $merchantId = null): string
     {
         $merchantId = $merchantId ?: getenv(static::BRASPAG_MERCHANT_ID) ?: null;
 
@@ -105,7 +105,7 @@ class AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    private static function setTimeout(int $timeout = null): int
+    private static function setTimeout(?int $timeout = null): int
     {
         $envValue = getenv(static::BRASPAG_TIMEOUT);
 
@@ -127,7 +127,7 @@ class AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    private static function setSandbox(bool $sandbox = null): bool
+    private static function setSandbox(?bool $sandbox = null): bool
     {
         $envValue = strtolower(getenv(static::BRASPAG_SANDBOX));
 

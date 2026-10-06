@@ -11,7 +11,7 @@ class ParametersHelper
     /**
      * Set env parameters
      */
-    public static function setEnv(array $parameters = null): void
+    public static function setEnv(?array $parameters = null): void
     {
         $parameters = $parameters ?: self::randomValues();
 
@@ -44,7 +44,7 @@ class ParametersHelper
     {
         return [
             AbstractParameters::BRASPAG_MERCHANT_ID => FakerHelper::get()->word(),
-            AbstractParameters::BRASPAG_SANDBOX => FakerHelper::get()->boolean,
+            AbstractParameters::BRASPAG_SANDBOX => FakerHelper::get()->boolean(),
             AbstractParameters::BRASPAG_TIMEOUT => FakerHelper::get()->numberBetween(0, 60),
 
             PagadorParameters::BRASPAG_MERCHANT_KEY => FakerHelper::get()->word(),

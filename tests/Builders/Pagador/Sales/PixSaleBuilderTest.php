@@ -7,14 +7,13 @@ use Braspag\Builders\Pagador\Sales\PixSaleBuilder;
 use Braspag\Entities\Pagador\Payment\PixPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PixSaleBuilderTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validPixSale
-     */
+    #[DataProvider('validPixSale')]
     public function test_create_pix(array $properties)
     {
         $merchantOrderId = $properties['MerchantOrderId'];

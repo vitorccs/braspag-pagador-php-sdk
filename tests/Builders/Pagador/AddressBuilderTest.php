@@ -7,14 +7,13 @@ use Braspag\Entities\Pagador\Address;
 use Braspag\Helpers\ZipCodeHelper;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AddressBuilderTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validAddressData
-     */
+    #[DataProvider('validAddressData')]
     public function test_create_address(array $properties)
     {
         $address = AddressBuilder::create()

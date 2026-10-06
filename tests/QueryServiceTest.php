@@ -4,8 +4,9 @@ namespace Braspag\Test;
 
 use Braspag\QueryService;
 use Braspag\Test\Shared\FakeResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class QueryServiceTest extends BaseTest
+class QueryServiceTest extends BaseTestCase
 {
     /**
      * @return QueryService
@@ -15,9 +16,7 @@ class QueryServiceTest extends BaseTest
         return new QueryService();
     }
 
-    /**
-     * @dataProvider validPaymentId
-     */
+    #[DataProvider('validPaymentId')]
     public function test_get_by_payment_id(string $paymentId, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -33,9 +32,7 @@ class QueryServiceTest extends BaseTest
         $this->assertEquals($fakeJson->Payment->Status, $response->Payment->Status);
     }
 
-    /**
-     * @dataProvider validMerchantOrderId
-     */
+    #[DataProvider('validMerchantOrderId')]
     public function test_get_by_merchant_order_id(string $merchantOrderId, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -55,9 +52,7 @@ class QueryServiceTest extends BaseTest
         $this->assertNotEmpty($response->Payments);
     }
 
-    /**
-     * @dataProvider validRecurrentPaymentId
-     */
+    #[DataProvider('validRecurrentPaymentId')]
     public function test_get_by_recurrent_payment_id(string $recurrentPaymentId, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -76,7 +71,7 @@ class QueryServiceTest extends BaseTest
         $this->assertEquals($fakeJson->RecurrentPayment->Status, $response->RecurrentPayment->Status);
     }
 
-    public function validPaymentId(): array
+    public static function validPaymentId(): array
     {
         return [
             'valid' => [
@@ -86,7 +81,7 @@ class QueryServiceTest extends BaseTest
         ];
     }
 
-    public function validMerchantOrderId(): array
+    public static function validMerchantOrderId(): array
     {
         return [
             'valid' => [
@@ -96,7 +91,7 @@ class QueryServiceTest extends BaseTest
         ];
     }
 
-    public function validRecurrentPaymentId(): array
+    public static function validRecurrentPaymentId(): array
     {
         return [
             'valid' => [

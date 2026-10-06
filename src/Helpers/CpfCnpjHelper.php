@@ -8,12 +8,12 @@ class CpfCnpjHelper
     /**
      * The CPF chars length
      */
-    const CPF_CHARS_LENGTH = 11;
+    const int CPF_CHARS_LENGTH = 11;
 
     /**
      * The CNPJ chars length
      */
-    const CNPJ_CHARS_LENGTH = 14;
+    const int CNPJ_CHARS_LENGTH = 14;
 
     public static function unmask(string $value): string
     {

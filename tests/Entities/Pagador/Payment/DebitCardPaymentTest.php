@@ -7,14 +7,13 @@ use Braspag\Entities\Pagador\Cards\DebitCard;
 use Braspag\Entities\Pagador\Payment\DebitCardPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DebitCardPaymentTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validDebitCardPayment
-     */
+    #[DataProvider('validDebitCardPayment')]
     public function test_properties(array $properties)
     {
         $debitCardPayment = new DebitCardPayment($properties['Provider'], $properties['Amount']);

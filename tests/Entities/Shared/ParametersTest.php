@@ -7,6 +7,7 @@ use Braspag\Entities\Pagador\Parameters;
 use Braspag\Entities\Shared\AbstractParameters;
 use Braspag\Test\Shared\ParametersHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ParametersTest extends TestCase
 {
@@ -32,9 +33,7 @@ class ParametersTest extends TestCase
         $this->assertEquals($parameters->getSandbox(), Parameters::getDefaultSandbox());
     }
 
-    /**
-     * @dataProvider validEnvSandboxValues
-     */
+    #[DataProvider('validEnvSandboxValues')]
     public function test_abstract_parameters_by_instance(string $sandbox)
     {
         $random = ParametersHelper::randomValues();
@@ -52,9 +51,7 @@ class ParametersTest extends TestCase
         $this->assertEquals($parameters->getSandbox(), $random[AbstractParameters::BRASPAG_SANDBOX]);
     }
 
-    /**
-     * @dataProvider validEnvSandboxValues
-     */
+    #[DataProvider('validEnvSandboxValues')]
     public function test_abstract_parameters_by_env(string $sandbox)
     {
         $random = ParametersHelper::randomValues();
@@ -73,7 +70,7 @@ class ParametersTest extends TestCase
      * Since Env files has no 'boolean' datatype, we have to evaluate
      * every string representation of a boolean value
      */
-    public function validEnvSandboxValues(): array
+    public static function validEnvSandboxValues(): array
     {
         return [
             'string "true"' => ['true'],

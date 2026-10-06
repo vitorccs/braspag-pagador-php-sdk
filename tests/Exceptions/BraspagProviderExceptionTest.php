@@ -5,19 +5,18 @@ namespace Braspag\Test\Exceptions;
 use Braspag\Exceptions\BraspagProviderException;
 use Braspag\Http\Resource;
 use Braspag\SaleService;
-use Braspag\Test\BaseTest;
+use Braspag\Test\BaseTestCase;
 use Braspag\Test\Shared\FakeResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class BraspagProviderExceptionTest extends BaseTest
+class BraspagProviderExceptionTest extends BaseTestCase
 {
     public function resource(): Resource
     {
         return new SaleService();
     }
 
-    /**
-     * @dataProvider invalidPaymentData
-     */
+    #[DataProvider('invalidPaymentData')]
     public function test_create_sale(array        $data,
                                      bool         $checkSuccess,
                                      FakeResponse $fakeResponse)
@@ -33,7 +32,7 @@ class BraspagProviderExceptionTest extends BaseTest
         $resource->create($data, $checkSuccess);
     }
 
-    public function invalidPaymentData(): array
+    public static function invalidPaymentData(): array
     {
         return [
             'invalid data with check enabled' => [

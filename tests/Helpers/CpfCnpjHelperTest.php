@@ -5,12 +5,11 @@ namespace Braspag\Test\Helpers;
 use Braspag\Helpers\CpfCnpjHelper;
 use Braspag\Test\Shared\FakerHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CpfCnpjHelperTest extends TestCase
 {
-    /**
-     * @dataProvider validCpfProvider
-     */
+    #[DataProvider('validCpfProvider')]
     public function test_valid_cpf(string $value): void
     {
         $actual = CpfCnpjHelper::validateCpf($value);
@@ -18,9 +17,7 @@ class CpfCnpjHelperTest extends TestCase
         $this->assertTrue($actual);
     }
 
-    /**
-     * @dataProvider validCnpjProvider
-     */
+    #[DataProvider('validCnpjProvider')]
     public function test_valid_cnpj(string $value): void
     {
         $actual = CpfCnpjHelper::validateCnpj($value);
@@ -28,10 +25,8 @@ class CpfCnpjHelperTest extends TestCase
         $this->assertTrue($actual);
     }
 
-    /**
-     * @dataProvider invalidCpfProvider
-     * @dataProvider validCnpjProvider
-     */
+    #[DataProvider('invalidCpfProvider')]
+    #[DataProvider('validCnpjProvider')]
     public function test_invalid_cpf(string $value): void
     {
         $actual = CpfCnpjHelper::validateCpf($value);
@@ -39,10 +34,8 @@ class CpfCnpjHelperTest extends TestCase
         $this->assertFalse($actual);
     }
 
-    /**
-     * @dataProvider invalidCnpjProvider
-     * @dataProvider validCpfProvider
-     */
+    #[DataProvider('invalidCnpjProvider')]
+    #[DataProvider('validCpfProvider')]
     public function test_invalid_cnpj(string $value): void
     {
         $actual = CpfCnpjHelper::validateCnpj($value);
@@ -50,9 +43,7 @@ class CpfCnpjHelperTest extends TestCase
         $this->assertFalse($actual);
     }
 
-    /**
-     * @dataProvider unmaskProvider
-     */
+    #[DataProvider('unmaskProvider')]
     public function test_unmask(string $value,
                                 string $expected): void
     {

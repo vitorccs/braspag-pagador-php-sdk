@@ -2,7 +2,7 @@
 SDK em PHP para API Braspag Pagador e API Cartão Protegido
 
 ## Requisitos
-* PHP >= 8.0
+* PHP >= 8.3
 
 ## Descrição
 SDK em PHP para a [API Braspag Pagador](https://braspag.github.io/manual/braspag-pagador).

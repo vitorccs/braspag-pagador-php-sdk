@@ -6,14 +6,13 @@ namespace Braspag\Test\Entities\Pagador\Cards;
 use Braspag\Entities\Pagador\Cards\CreditCard;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CreditCardTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validPagadorCreditCard
-     */
+    #[DataProvider('validPagadorCreditCard')]
     public function test_credit_properties(array $properties)
     {
         $creditCard = new CreditCard();

@@ -7,6 +7,7 @@ use Braspag\Entities\Pagador\Parameters;
 use Braspag\Exceptions\BraspagParameterException;
 use Braspag\Test\Shared\ParametersHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BraspagParameterExceptionTest extends TestCase
 {
@@ -15,9 +16,7 @@ class BraspagParameterExceptionTest extends TestCase
         ParametersHelper::resetEnv();
     }
 
-    /**
-     * @dataProvider emptyMerchantId
-     */
+    #[DataProvider('emptyMerchantId')]
     public function test_invalid_merchant_id_by_env(array $random, $merchantId)
     {
         $this->expectException(BraspagParameterException::class);
@@ -29,9 +28,7 @@ class BraspagParameterExceptionTest extends TestCase
         new Parameters();
     }
 
-    /**
-     * @dataProvider emptyMerchantId
-     */
+    #[DataProvider('emptyMerchantId')]
     public function test_invalid_merchant_id_by_instance(array $random, $merchantId)
     {
         $this->expectException(BraspagParameterException::class);
@@ -47,9 +44,7 @@ class BraspagParameterExceptionTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider emptyMerchantKey
-     */
+    #[DataProvider('emptyMerchantKey')]
     public function test_invalid_merchant_key_by_env(array $random, $merchantKey)
     {
         $this->expectException(BraspagParameterException::class);
@@ -61,9 +56,7 @@ class BraspagParameterExceptionTest extends TestCase
         new Parameters();
     }
 
-    /**
-     * @dataProvider emptyMerchantKey
-     */
+    #[DataProvider('emptyMerchantKey')]
     public function test_invalid_merchant_key_by_instance(array $random, $merchantKey)
     {
         $this->expectException(BraspagParameterException::class);
@@ -79,9 +72,7 @@ class BraspagParameterExceptionTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider invalidSandboxValues
-     */
+    #[DataProvider('invalidSandboxValues')]
     public function test_invalid_sandbox_by_env(array $random, $sandbox)
     {
         $this->expectException(BraspagParameterException::class);
@@ -93,9 +84,7 @@ class BraspagParameterExceptionTest extends TestCase
         new Parameters();
     }
 
-    /**
-     * @dataProvider invalidTimeoutValues
-     */
+    #[DataProvider('invalidTimeoutValues')]
     public function test_invalid_merchant_timeout_by_env(array $random, $timeout)
     {
         $this->expectException(BraspagParameterException::class);
@@ -107,7 +96,7 @@ class BraspagParameterExceptionTest extends TestCase
         new Parameters();
     }
 
-    public function emptyMerchantId(): array
+    public static function emptyMerchantId(): array
     {
         $random = ParametersHelper::randomValues();
 
@@ -116,7 +105,7 @@ class BraspagParameterExceptionTest extends TestCase
         ];
     }
 
-    public function emptyMerchantKey(): array
+    public static function emptyMerchantKey(): array
     {
         $random = ParametersHelper::randomValues();
 
@@ -125,7 +114,7 @@ class BraspagParameterExceptionTest extends TestCase
         ];
     }
 
-    public function invalidSandboxValues(): array
+    public static function invalidSandboxValues(): array
     {
         $random = ParametersHelper::randomValues();
 
@@ -137,7 +126,7 @@ class BraspagParameterExceptionTest extends TestCase
         ];
     }
 
-    public function invalidTimeoutValues(): array
+    public static function invalidTimeoutValues(): array
     {
         $random = ParametersHelper::randomValues();
 

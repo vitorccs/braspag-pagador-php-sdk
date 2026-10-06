@@ -9,6 +9,7 @@ use Braspag\Test\Shared\FakeResponse;
 use Braspag\Test\Shared\FakeResponseHelper;
 use Braspag\Test\Shared\ParametersHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BraspagValidationExceptionTest extends TestCase
 {
@@ -20,9 +21,7 @@ class BraspagValidationExceptionTest extends TestCase
         ParametersHelper::setEnv();
     }
 
-    /**
-     * @dataProvider apiPagadorValidationErrors
-     */
+    #[DataProvider('apiPagadorValidationErrors')]
     public function test_pagador_validation_errors(FakeResponse $fakeResponse,
                                                    bool         $checkSuccess)
     {
@@ -37,17 +36,16 @@ class BraspagValidationExceptionTest extends TestCase
         $resource->create([], $checkSuccess);
     }
 
-    /**
-     * @dataProvider apiPagadorValidationErrors
-     */
-    public function test_pagador_validation_error_code(FakeResponse $fakeResponse)
+    #[DataProvider('apiPagadorValidationErrors')]
+    public function test_pagador_validation_error_code(FakeResponse $fakeResponse,
+                                                       bool         $checkSuccess)
     {
         /** @var SaleService $resource */
 
         $resource = FakeResponseHelper::addMockHandler(new SaleService(), $fakeResponse);
 
         try {
-            $resource->create([]);
+            $resource->create([], $checkSuccess);
         } catch (\Exception $e) {
             $fakeJson = $fakeResponse->getJsonResponse();
             $this->assertInstanceOf(BraspagValidationException::class, $e);
@@ -55,9 +53,7 @@ class BraspagValidationExceptionTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider apiCartaoProtegidoValidationErrors
-     */
+    #[DataProvider('apiCartaoProtegidoValidationErrors')]
     public function test_cartao_protegido_validation_errors(FakeResponse $fakeResponse)
     {
         $fakeJson = $fakeResponse->getJsonResponse();
@@ -74,9 +70,7 @@ class BraspagValidationExceptionTest extends TestCase
         $resource->createToken([]);
     }
 
-    /**
-     * @dataProvider apiCartaoProtegidoValidationErrors
-     */
+    #[DataProvider('apiCartaoProtegidoValidationErrors')]
     public function test_cartao_protegido_validation_error_code(FakeResponse $fakeResponse)
     {
         /** @var CardService $resource */
@@ -91,7 +85,7 @@ class BraspagValidationExceptionTest extends TestCase
         }
     }
 
-    public function apiPagadorValidationErrors(): array
+    public static function apiPagadorValidationErrors(): array
     {
         return [
             'invalid data with check enabled' => [
@@ -105,7 +99,7 @@ class BraspagValidationExceptionTest extends TestCase
         ];
     }
 
-    public function apiCartaoProtegidoValidationErrors(): array
+    public static function apiCartaoProtegidoValidationErrors(): array
     {
         return [
             'invalid data with check enabled' => [
