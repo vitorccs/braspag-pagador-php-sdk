@@ -27,11 +27,12 @@ class AddressBuilderTest extends TestCase
             ->setDistrict($properties['District'])
             ->get();
 
+        /** @var Address $objAddress */
         $objAddress = $this->fillObject(
             new Address(),
             $properties
         );
-        $objAddress->ZipCode = ZipCodeHelper::unmask($objAddress->ZipCode);
+        $objAddress->ZipCode = ZipCodeHelper::unmask($objAddress->ZipCode ?? '');
 
         $this->assertEquals($address, $objAddress);
     }

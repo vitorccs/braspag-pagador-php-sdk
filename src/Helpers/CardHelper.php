@@ -7,7 +7,7 @@ class CardHelper
     public static function validateCardNumber(string $cardNumber): bool
     {
         // remove any non-numeric chars
-        $numeric = Sanitizer::numeric($cardNumber);
+        $numeric = SanitizerHelper::numeric($cardNumber);
 
         if (empty($numeric)) return false;
 
