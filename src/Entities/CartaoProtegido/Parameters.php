@@ -10,12 +10,12 @@ class Parameters extends AbstractParameters
     /**
      * The ENV name for Merchant Key
      */
-    const BRASPAG_CLIENT_ID = 'BRASPAG_CLIENT_ID';
+    const string BRASPAG_CLIENT_ID = 'BRASPAG_CLIENT_ID';
 
     /**
      * The ENV name for Merchant Key
      */
-    const BRASPAG_CLIENT_SECRET = 'BRASPAG_CLIENT_SECRET';
+    const string BRASPAG_CLIENT_SECRET = 'BRASPAG_CLIENT_SECRET';
 
     /**
      * The Client ID
@@ -30,11 +30,11 @@ class Parameters extends AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    public function __construct(string $merchantId = null,
-                                string $clientId = null,
-                                string $clientSecret = null,
-                                bool   $sandbox = null,
-                                int    $timeout = null)
+    public function __construct(?string $merchantId = null,
+                                ?string $clientId = null,
+                                ?string $clientSecret = null,
+                                ?bool   $sandbox = null,
+                                ?int    $timeout = null)
     {
         parent::__construct($merchantId, $sandbox, $timeout);
 
@@ -55,7 +55,7 @@ class Parameters extends AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    private function setClientId(string $clientId = null): string
+    private function setClientId(?string $clientId = null): string
     {
         $clientId = $clientId ?: getenv(static::BRASPAG_CLIENT_ID) ?: null;
 
@@ -69,7 +69,7 @@ class Parameters extends AbstractParameters
     /**
      * @throws BraspagParameterException
      */
-    private function setClientSecret(string $clientSecret = null): string
+    private function setClientSecret(?string $clientSecret = null): string
     {
         $clientSecret = $clientSecret ?: getenv(static::BRASPAG_CLIENT_SECRET) ?: null;
 

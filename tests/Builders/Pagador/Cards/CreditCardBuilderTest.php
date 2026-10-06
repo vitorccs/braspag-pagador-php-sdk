@@ -9,14 +9,13 @@ use Braspag\Exceptions\BraspagBuilderException;
 use Braspag\Test\Shared\CardDataProvider;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CreditCardBuilderTest extends TestCase
 {
     use EntityDataProviders, CardDataProvider;
 
-    /**
-     * @dataProvider validPagadorCreditCard
-     */
+    #[DataProvider('validPagadorCreditCard')]
     public function teste_create_card(array $properties)
     {
         $card = CreditCardBuilder::create()
@@ -37,10 +36,8 @@ class CreditCardBuilderTest extends TestCase
         $this->assertEquals($card, $objCard);
     }
 
-    /**
-     * @dataProvider invalidCardBrand
-     * @dataProvider invalidCreditCardBrand
-     */
+    #[DataProvider('invalidCardBrand')]
+    #[DataProvider('invalidCreditCardBrand')]
     public function test_invalid_credit_card_brand(bool $valid, array $brands)
     {
         $this->expectException(BraspagBuilderException::class);
@@ -51,12 +48,12 @@ class CreditCardBuilderTest extends TestCase
         }
     }
 
-    public function invalidCreditCardBrand(): array
+    public static function invalidCreditCardBrand(): array
     {
         $samples = array_map('strtolower', CreditCardBrands::getArray());
 
         return [
-            'invalid' => [false, $samples]
+            'invalid credit card brand' => [false, $samples]
         ];
     }
 }

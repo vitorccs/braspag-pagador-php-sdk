@@ -118,7 +118,9 @@ class CustomerBuilder
      */
     protected function validateCpfCnpj(?string $identity): ?string
     {
-        $identity = CpfCnpjHelper::unmask($identity) ?: null;
+        $identity = $identity
+            ? CpfCnpjHelper::unmask($identity)
+            : null;
 
         if (!empty($identity) && !CpfCnpjHelper::validateAny($identity)) {
             throw new BraspagBuilderException('Customer Identity');

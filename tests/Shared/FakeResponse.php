@@ -19,7 +19,7 @@ class FakeResponse extends Response
     public function __construct(
         int    $status = 200,
         array  $headers = [],
-        string $body = null
+        ?string $body = null
     )
     {
         parent::__construct($status, $headers, $body);

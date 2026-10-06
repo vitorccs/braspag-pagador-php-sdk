@@ -6,14 +6,13 @@ namespace Braspag\Test\Entities\Pagador;
 use Braspag\Entities\Pagador\Customer;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CustomerTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validCustomerData
-     */
+    #[DataProvider('validCustomerData')]
     public function test_properties(array $properties)
     {
         $customer = new Customer($properties['Name']);

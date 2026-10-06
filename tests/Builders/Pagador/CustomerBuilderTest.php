@@ -9,14 +9,13 @@ use Braspag\Helpers\CpfCnpjHelper;
 use Braspag\Test\Shared\EntityDataProviders;
 use Braspag\Test\Shared\FakerHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CustomerBuilderTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validCustomerData
-     */
+    #[DataProvider('validCustomerData')]
     public function test_create_customer(array $properties)
     {
         $customer = CustomerBuilder::create($properties['Name'])
@@ -35,9 +34,7 @@ class CustomerBuilderTest extends TestCase
         $this->assertEquals($customer, $objCustomer);
     }
 
-    /**
-     * @dataProvider invalidName
-     */
+    #[DataProvider('invalidName')]
     public function test_create_invalid_name(string $name)
     {
         $this->expectException(BraspagBuilderException::class);
@@ -45,9 +42,7 @@ class CustomerBuilderTest extends TestCase
         CustomerBuilder::create($name);
     }
 
-    /**
-     * @dataProvider invalidEmail
-     */
+    #[DataProvider('invalidEmail')]
     public function test_create_invalid_email(string $mail)
     {
         $this->expectException(BraspagBuilderException::class);
@@ -58,9 +53,7 @@ class CustomerBuilderTest extends TestCase
             ->setEmail($mail);
     }
 
-    /**
-     * @dataProvider invalidCpf
-     */
+    #[DataProvider('invalidCpf')]
     public function test_create_invalid_cpf(string $cpf)
     {
         $this->expectException(BraspagBuilderException::class);
@@ -71,9 +64,7 @@ class CustomerBuilderTest extends TestCase
             ->setEmail($cpf);
     }
 
-    /**
-     * @dataProvider invalidCnpj
-     */
+    #[DataProvider('invalidCnpj')]
     public function test_create_invalid_cnpj(string $cnpj)
     {
         $this->expectException(BraspagBuilderException::class);
@@ -84,14 +75,14 @@ class CustomerBuilderTest extends TestCase
             ->setEmail($cnpj);
     }
 
-    public function invalidName(): array
+    public static function invalidName(): array
     {
         return [
             'empty' => ['']
         ];
     }
 
-    public function invalidEmail(): array
+    public static function invalidEmail(): array
     {
         return [
             'test' => ['test'],
@@ -100,7 +91,7 @@ class CustomerBuilderTest extends TestCase
         ];
     }
 
-    public function invalidCpf(): array
+    public static function invalidCpf(): array
     {
         $cpf = FakerHelper::get()->cpf(false);
         $lastDigit = substr($cpf, -1);
@@ -112,7 +103,7 @@ class CustomerBuilderTest extends TestCase
         ];
     }
 
-    public function invalidCnpj(): array
+    public static function invalidCnpj(): array
     {
         $cnpj = FakerHelper::get()->cnpj(false);
         $lastDigit = substr($cnpj, -1);

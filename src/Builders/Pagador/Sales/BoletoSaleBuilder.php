@@ -151,7 +151,9 @@ class BoletoSaleBuilder extends SaleBuilder
      */
     protected function validateCnpj(?string $identification): ?string
     {
-        $identification = CpfCnpjHelper::unmask($identification) ?: null;
+        $identification = $identification
+            ? CpfCnpjHelper::unmask($identification)
+            : null;
 
         if (!empty($identification) && !CpfCnpjHelper::validateCnpj($identification)) {
             throw new BraspagBuilderException('Identification');

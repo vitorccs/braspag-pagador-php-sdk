@@ -6,14 +6,13 @@ namespace Braspag\Test\Entities\Pagador;
 use Braspag\Entities\Pagador\Address;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AddressTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validAddressData
-     */
+    #[DataProvider('validAddressData')]
     public function test_properties(array $properties)
     {
         $address = new Address();

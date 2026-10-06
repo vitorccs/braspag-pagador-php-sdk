@@ -4,8 +4,9 @@ namespace Braspag\Test;
 
 use Braspag\SaleService;
 use Braspag\Test\Shared\FakeResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class SaleServiceTest extends BaseTest
+class SaleServiceTest extends BaseTestCase
 {
     /**
      * @return SaleService
@@ -15,9 +16,7 @@ class SaleServiceTest extends BaseTest
         return new SaleService();
     }
 
-    /**
-     * @dataProvider validPaymentData
-     */
+    #[DataProvider('validPaymentData')]
     public function test_create_sale(array $data, bool $checkSuccess, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -33,9 +32,7 @@ class SaleServiceTest extends BaseTest
         $this->assertEquals($fakeJson->Payment->Status, $response->Payment->Status);
     }
 
-    /**
-     * @dataProvider validRefundData
-     */
+    #[DataProvider('validRefundData')]
     public function test_refund_sale(string $paymentId, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -52,7 +49,7 @@ class SaleServiceTest extends BaseTest
         $this->assertEquals($fakeJson->ProviderReturnMessage, $response->ProviderReturnMessage);
     }
 
-    public function validPaymentData(): array
+    public static function validPaymentData(): array
     {
         return [
             'valid data with check enabled' => [
@@ -73,7 +70,7 @@ class SaleServiceTest extends BaseTest
         ];
     }
 
-    public function validRefundData(): array
+    public static function validRefundData(): array
     {
         return [
             'valid data' => [

@@ -6,26 +6,25 @@ namespace Braspag\Test\Exceptions;
 use Braspag\Exceptions\BraspagRequestException;
 use Braspag\Http\Resource;
 use Braspag\SaleService;
-use Braspag\Test\BaseTest;
+use Braspag\Test\BaseTestCase;
 use Braspag\Test\Shared\FakeResponse;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class BraspagRequestExceptionTest extends BaseTest
+class BraspagRequestExceptionTest extends BaseTestCase
 {
     public function resource(): Resource
     {
         return new SaleService();
     }
 
-    /**
-     * @dataProvider serverErrors
-     * @dataProvider clientErrors
-     * @dataProvider otherErrors
-     */
-    public function test_server_errors($fakeResponse, string $exceptionMessage = null)
+    #[DataProvider('serverErrors')]
+    #[DataProvider('clientErrors')]
+    #[DataProvider('otherErrors')]
+    public function test_server_errors($fakeResponse, ?string $exceptionMessage = null)
     {
         $this->expectException(BraspagRequestException::class);
         $this->expectExceptionMessage($exceptionMessage);
@@ -36,7 +35,7 @@ class BraspagRequestExceptionTest extends BaseTest
         $resource->create([]);
     }
 
-    public function serverErrors(): array
+    public static function serverErrors(): array
     {
         return [
             'http_500' => [
@@ -50,7 +49,7 @@ class BraspagRequestExceptionTest extends BaseTest
         ];
     }
 
-    public function clientErrors(): array
+    public static function clientErrors(): array
     {
         return [
             'http_400' => [
@@ -68,7 +67,7 @@ class BraspagRequestExceptionTest extends BaseTest
         ];
     }
 
-    public function otherErrors(): array
+    public static function otherErrors(): array
     {
         return [
             'transfer_exception' => [

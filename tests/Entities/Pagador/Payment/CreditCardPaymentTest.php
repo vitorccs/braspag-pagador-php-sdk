@@ -7,14 +7,13 @@ use Braspag\Entities\Pagador\Cards\CreditCard;
 use Braspag\Entities\Pagador\Payment\CreditCardPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CreditCardPaymentTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validCreditCardPayment
-     */
+    #[DataProvider('validCreditCardPayment')]
     public function test_properties(array $properties)
     {
         $creditCardPayment = new CreditCardPayment($properties['Provider'], $properties['Amount']);

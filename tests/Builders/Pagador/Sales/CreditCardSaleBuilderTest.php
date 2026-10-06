@@ -7,14 +7,13 @@ use Braspag\Builders\Pagador\Sales\CreditCardSaleBuilder;
 use Braspag\Entities\Pagador\Payment\CreditCardPayment;
 use Braspag\Test\Shared\EntityDataProviders;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CreditCardSaleBuilderTest extends TestCase
 {
     use EntityDataProviders;
 
-    /**
-     * @dataProvider validCreditCardSale
-     */
+    #[DataProvider('validCreditCardSale')]
     public function test_create_credit_card(array $properties)
     {
         $merchantOrderId = $properties['MerchantOrderId'];

@@ -4,8 +4,8 @@ namespace Braspag\Helpers;
 
 class ZipCodeHelper
 {
-    public static function unmask(int|string|null $value): string
+    public static function unmask(string $value): string
     {
-        return Sanitizer::numeric($value);
+        return SanitizerHelper::numeric($value);
     }
 }

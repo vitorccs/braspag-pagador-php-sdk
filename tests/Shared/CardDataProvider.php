@@ -4,7 +4,7 @@ namespace Braspag\Test\Shared;
 
 trait CardDataProvider
 {
-    public function validCardNumbersAuto(): array
+    public static function validCardNumbersAuto(): array
     {
         $samples = [];
 
@@ -17,7 +17,7 @@ trait CardDataProvider
         ];
     }
 
-    public function validCardNumbersManual(): array
+    public static function validCardNumbersManual(): array
     {
         $samples = [
             '379072330149966',
@@ -34,12 +34,12 @@ trait CardDataProvider
         ];
     }
 
-    public function invalidCardNumbersAuto(): array
+    public static function invalidCardNumbersAuto(): array
     {
         $samples = [];
 
         for ($i = 0; $i <= 100; $i++) {
-            $samples[] = $this->breakCardNumber(FakerHelper::get()->creditCardNumber());
+            $samples[] = static::breakCardNumber(FakerHelper::get()->creditCardNumber());
         }
 
         return [
@@ -47,7 +47,7 @@ trait CardDataProvider
         ];
     }
 
-    public function invalidCardNumbersManual(): array
+    public static function invalidCardNumbersManual(): array
     {
         $samples = [
             'abc',
@@ -67,7 +67,7 @@ trait CardDataProvider
         ];
     }
 
-    public function invalidCardSecurityCode(): array
+    public static function invalidCardSecurityCode(): array
     {
         $samples = [
             'abc',
@@ -82,7 +82,7 @@ trait CardDataProvider
         ];
     }
 
-    public function invalidExpirationDate(): array
+    public static function invalidExpirationDate(): array
     {
         $currYear = intval(date('Y'));
 
@@ -104,7 +104,7 @@ trait CardDataProvider
         ];
     }
 
-    public function invalidCardBrand(): array
+    public static function invalidCardBrand(): array
     {
         $samples = [
             'abc',
@@ -118,7 +118,7 @@ trait CardDataProvider
         ];
     }
 
-    public function breakCardNumber(int|string $number): string
+    public static function breakCardNumber(int|string $number): string
     {
         $number = intval($number);
         $lastDigit = substr($number, -1);

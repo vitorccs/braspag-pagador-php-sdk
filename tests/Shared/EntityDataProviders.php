@@ -26,7 +26,7 @@ trait EntityDataProviders
 
     // basic entities
 
-    public function validAddressData(): array
+    public static function validAddressData(): array
     {
         return [
             'valid' => [
@@ -43,7 +43,7 @@ trait EntityDataProviders
         ];
     }
 
-    public function validCustomerData(): array
+    public static function validCustomerData(): array
     {
         return [
             'valid' => [
@@ -61,7 +61,7 @@ trait EntityDataProviders
 
     // card data
 
-    public function validPagadorCreditCard(): array
+    public static function validPagadorCreditCard(): array
     {
         return [
             'valid' => [
@@ -80,7 +80,7 @@ trait EntityDataProviders
         ];
     }
 
-    public function validDebitCard(): array
+    public static function validDebitCard(): array
     {
         return [
             'valid' => [
@@ -99,7 +99,7 @@ trait EntityDataProviders
         ];
     }
 
-    public function validCartaoProtegidoCard(): array
+    public static function validCartaoProtegidoCard(): array
     {
         return [
             'valid' => [
@@ -116,7 +116,7 @@ trait EntityDataProviders
 
     // payment
 
-    public function validBoletoPayment(): array
+    public static function validBoletoPayment(): array
     {
         return [
             'valid' => [
@@ -145,7 +145,7 @@ trait EntityDataProviders
         ];
     }
 
-    public function validCreditCardPayment(): array
+    public static function validCreditCardPayment(): array
     {
         return [
             'valid' => [
@@ -162,13 +162,13 @@ trait EntityDataProviders
                     'Recurrent' => FakerHelper::get()->boolean(),
                     'SoftDescriptor' => FakerHelper::get()->word(),
                     'DoSplit' => FakerHelper::get()->boolean(),
-                    'CreditCard' => $this->validPagadorCreditCard()['valid'][0]
+                    'CreditCard' => static::validPagadorCreditCard()['valid'][0]
                 ]
             ]
         ];
     }
 
-    public function validDebitCardPayment(): array
+    public static function validDebitCardPayment(): array
     {
         return [
             'valid' => [
@@ -178,13 +178,13 @@ trait EntityDataProviders
                     'Amount' => FakerHelper::get()->numberBetween(10, 100),
                     'Installments' => FakerHelper::get()->numberBetween(1, 12),
                     'ReturnUrl' => FakerHelper::get()->url(),
-                    'DebitCard' => $this->validDebitCard()['valid'][0]
+                    'DebitCard' => static::validDebitCard()['valid'][0]
                 ]
             ]
         ];
     }
 
-    public function validPixPayment(): array
+    public static function validPixPayment(): array
     {
         return [
             'valid' => [
@@ -200,40 +200,40 @@ trait EntityDataProviders
 
     // sales
 
-    public function validBoletoSale(): array
+    public static function validBoletoSale(): array
     {
         return [
             'valid' => [
                 [
                     'MerchantOrderId' => FakerHelper::get()->randomNumber(6),
-                    'Customer' => $this->validCustomerData()['valid'][0],
-                    'Payment' => $this->validBoletoPayment()['valid'][0]
+                    'Customer' => static::validCustomerData()['valid'][0],
+                    'Payment' => static::validBoletoPayment()['valid'][0]
                 ]
             ]
         ];
     }
 
-    public function validCreditCardSale(): array
+    public static function validCreditCardSale(): array
     {
         return [
             'valid' => [
                 [
                     'MerchantOrderId' => FakerHelper::get()->randomNumber(6),
-                    'Customer' => $this->validCustomerData()['valid'][0],
-                    'Payment' => $this->validCreditCardPayment()['valid'][0]
+                    'Customer' => static::validCustomerData()['valid'][0],
+                    'Payment' => static::validCreditCardPayment()['valid'][0]
                 ]
             ]
         ];
     }
 
-    public function validPixSale(): array
+    public static function validPixSale(): array
     {
         return [
             'valid' => [
                 [
                     'MerchantOrderId' => FakerHelper::get()->randomNumber(6),
-                    'Customer' => $this->validCustomerData()['valid'][0],
-                    'Payment' => $this->validPixPayment()['valid'][0]
+                    'Customer' => static::validCustomerData()['valid'][0],
+                    'Payment' => static::validPixPayment()['valid'][0]
                 ]
             ]
         ];

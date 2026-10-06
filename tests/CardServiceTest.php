@@ -4,8 +4,9 @@ namespace Braspag\Test;
 
 use Braspag\CardService;
 use Braspag\Test\Shared\FakeResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class CardServiceTest extends BaseTest
+class CardServiceTest extends BaseTestCase
 {
     /**
      * @return CardService
@@ -15,9 +16,7 @@ class CardServiceTest extends BaseTest
         return new CardService();
     }
 
-    /**
-     * @dataProvider validCardData
-     */
+    #[DataProvider('validCardData')]
     public function test_create_sale(array $data, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -31,9 +30,7 @@ class CardServiceTest extends BaseTest
         $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
-    /**
-     * @dataProvider validTokenData
-     */
+    #[DataProvider('validTokenData')]
     public function test_get_card_by_token(string $data, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -47,9 +44,7 @@ class CardServiceTest extends BaseTest
         $this->assertObjectHasProperty('Account', $fakeJson);
     }
 
-    /**
-     * @dataProvider validTokenData
-     */
+    #[DataProvider('validTokenData')]
     public function test_get_token_by_alias(string $data, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -63,9 +58,7 @@ class CardServiceTest extends BaseTest
         $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
-    /**
-     * @dataProvider validSuspendTokenData
-     */
+    #[DataProvider('validSuspendTokenData')]
     public function test_suspend_token(string $data, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -79,9 +72,7 @@ class CardServiceTest extends BaseTest
         $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
-    /**
-     * @dataProvider validUnsuspendTokenData
-     */
+    #[DataProvider('validUnsuspendTokenData')]
     public function test_unsuspend_token(string $data, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -95,9 +86,7 @@ class CardServiceTest extends BaseTest
         $this->assertObjectHasProperty('TokenReference', $fakeJson);
     }
 
-    /**
-     * @dataProvider validRemoveTokenData
-     */
+    #[DataProvider('validRemoveTokenData')]
     public function test_remove_token(string $data, FakeResponse $fakeResponse)
     {
         $resource = $this->getFakeResource($fakeResponse);
@@ -114,7 +103,7 @@ class CardServiceTest extends BaseTest
     /**
      * @return array[]
      */
-    public function validCardData(): array
+    public static function validCardData(): array
     {
         return [
             'valid data' => [
@@ -127,7 +116,7 @@ class CardServiceTest extends BaseTest
     /**
      * @return array[]
      */
-    public function validTokenData(): array
+    public static function validTokenData(): array
     {
         return [
             'valid data' => [
@@ -153,7 +142,7 @@ class CardServiceTest extends BaseTest
     /**
      * @return array[]
      */
-    public function validSuspendTokenData(): array
+    public static function validSuspendTokenData(): array
     {
         return [
             'valid data' => [
@@ -166,7 +155,7 @@ class CardServiceTest extends BaseTest
     /**
      * @return array[]
      */
-    public function validUnsuspendTokenData(): array
+    public static function validUnsuspendTokenData(): array
     {
         return [
             'valid data' => [
@@ -179,7 +168,7 @@ class CardServiceTest extends BaseTest
     /**
      * @return array[]
      */
-    public function validRemoveTokenData(): array
+    public static function validRemoveTokenData(): array
     {
         return [
             'valid data' => [

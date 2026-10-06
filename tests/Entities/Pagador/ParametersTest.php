@@ -7,6 +7,7 @@ use Braspag\Entities\Pagador\Parameters;
 use Braspag\Exceptions\BraspagParameterException;
 use Braspag\Test\Shared\ParametersHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ParametersTest extends TestCase
 {
@@ -15,9 +16,6 @@ class ParametersTest extends TestCase
         ParametersHelper::resetEnv();
     }
 
-    /**
-     * @dataProvider
-     */
     public function test_parameters_by_env()
     {
         $random = ParametersHelper::randomValues();
@@ -46,9 +44,7 @@ class ParametersTest extends TestCase
         $this->assertEquals($parameters->getMerchantKey(), $random[Parameters::BRASPAG_MERCHANT_KEY]);
     }
 
-    /**
-     * @dataProvider missingArguments
-     */
+    #[DataProvider('missingArguments')]
     public function test_required_parameters(array $args)
     {
         $this->expectException(BraspagParameterException::class);
@@ -59,7 +55,7 @@ class ParametersTest extends TestCase
     /**
      *
      */
-    public function missingArguments(): array
+    public static function missingArguments(): array
     {
         $random = ParametersHelper::randomValues();
 

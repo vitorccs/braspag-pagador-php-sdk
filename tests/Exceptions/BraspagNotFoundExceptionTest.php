@@ -9,6 +9,7 @@ use Braspag\Test\Shared\FakeResponse;
 use Braspag\Test\Shared\FakeResponseHelper;
 use Braspag\Test\Shared\ParametersHelper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BraspagNotFoundExceptionTest extends TestCase
 {
@@ -20,11 +21,9 @@ class BraspagNotFoundExceptionTest extends TestCase
         ParametersHelper::setEnv();
     }
 
-    /**
-     * @dataProvider notFoundErrors
-     * @dataProvider clientErrors
-     * @dataProvider serverErrors
-     */
+    #[DataProvider('notFoundErrors')]
+    #[DataProvider('clientErrors')]
+    #[DataProvider('serverErrors')]
     public function test_by_merchant_order_id(FakeResponse $fakeResponse,
                                               bool         $isNotFoundError)
     {
@@ -33,11 +32,9 @@ class BraspagNotFoundExceptionTest extends TestCase
         $resource->getByMerchantOrderId('');
     }
 
-    /**
-     * @dataProvider notFoundErrors
-     * @dataProvider clientErrors
-     * @dataProvider serverErrors
-     */
+    #[DataProvider('notFoundErrors')]
+    #[DataProvider('clientErrors')]
+    #[DataProvider('serverErrors')]
     public function test_by_recurrent_payment_id(FakeResponse $fakeResponse,
                                                  bool         $isNotFoundError)
     {
@@ -46,11 +43,9 @@ class BraspagNotFoundExceptionTest extends TestCase
         $resource->getByRecurrentPaymentId('');
     }
 
-    /**
-     * @dataProvider notFoundErrors
-     * @dataProvider clientErrors
-     * @dataProvider serverErrors
-     */
+    #[DataProvider('notFoundErrors')]
+    #[DataProvider('clientErrors')]
+    #[DataProvider('serverErrors')]
     public function test_by_payment_id(FakeResponse $fakeResponse,
                                        bool         $isNotFoundError)
     {
@@ -78,18 +73,17 @@ class BraspagNotFoundExceptionTest extends TestCase
         return $resource;
     }
 
-    public function notFoundErrors(): array
+    public static function notFoundErrors(): array
     {
         return [
             '404' => [
                 new FakeResponse(BraspagNotFoundException::HTTP_NOT_FOUND),
-                true,
-                'Transaction not found'
+                true
             ]
         ];
     }
 
-    public function clientErrors(): array
+    public static function clientErrors(): array
     {
         return [
             '400 Bad Request' => [
@@ -115,7 +109,7 @@ class BraspagNotFoundExceptionTest extends TestCase
         ];
     }
 
-    public function serverErrors(): array
+    public static function serverErrors(): array
     {
         return [
             '500 Internal Server Error' => [
